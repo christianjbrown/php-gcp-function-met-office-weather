@@ -30,18 +30,15 @@ function run(ServerRequestInterface $request): ResponseInterface
             $metData = json_decode($rawMetData, true, 512, JSON_THROW_ON_ERROR);
             if (is_array($metData) && !empty($metData['SiteRep']['DV']['Location']['Period']['Rep']) && is_array($metData['SiteRep']['DV']['Location']['Period']['Rep'])) {
                 $weatherData = $metData['SiteRep']['DV']['Location']['Period']['Rep'];
-                $feelsLike = null;
+                $tempFeelsLike = null;
                 $temp = null;
                 $humidity = null;
                 $precipitation = null;
                 if (isset($weatherData['F']) && is_numeric($weatherData['F'])) {
-                    $feelsLike = (float)$weatherData['F'];
+                    $tempFeelsLike = (float)$weatherData['F'];
                 }
                 if (isset($weatherData['T']) && is_numeric($weatherData['T'])) {
                     $temp = (float)$weatherData['T'];
-                }
-                if (isset($weatherData['H']) && is_numeric($weatherData['H'])) {
-                    $humidity = (int)$weatherData['H'];
                 }
                 if (isset($weatherData['H']) && is_numeric($weatherData['H'])) {
                     $humidity = (int)$weatherData['H'];
@@ -50,7 +47,7 @@ function run(ServerRequestInterface $request): ResponseInterface
                     $precipitation = (int)$weatherData['Pp'];
                 }
                 $bodyJson['data'] = [
-                    'feels_like' => $feelsLike,
+                    'temp_feels_like' => $tempFeelsLike,
                     'temp' => $temp,
                     'humidity' => $humidity,
                     'precipitation' => $precipitation,
