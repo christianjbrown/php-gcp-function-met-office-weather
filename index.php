@@ -21,9 +21,19 @@ function run(ServerRequestInterface $request): ResponseInterface
         if (!empty(getenv('MET_OFFICE_API_KEY') && is_string(getenv('MET_OFFICE_API_KEY'))) && !empty(getenv('MET_OFFICE_SITE_ID') && is_string(getenv('MET_OFFICE_SITE_ID')))) {
             $apiKey = getenv('MET_OFFICE_API_KEY');
             $siteId = getenv('MET_OFFICE_SITE_ID');
+
             $time = time();
             $roundedDownTo3Hrs = ($time - ($time % 10800));
-            $date = gmdate('Y-m-d', $roundedDownTo3Hrs).'T'.gmdate('H', $roundedDownTo3Hrs).'Z';
+            $roundedUpTo3Hrs = ($roundedDownTo3Hrs + 10800);
+            $roundedDownDiff = $time - $roundedDownTo3Hrs;
+            $roundedUpDiff = $roundedUpTo3Hrs - $time;
+            if ($roundedDownDiff > $roundedUpDiff) {
+                $adjustedTime = $roundedUpTo3Hrs;
+            } else {
+                $adjustedTime = $roundedDownDiff;
+            }
+
+            $date = gmdate('Y-m-d\TH\Z', $adjustedTime);
 
             $metUrl = sprintf('http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/%s?res=3hourly&time=%s&key=%s', $siteId, $date, $apiKey);
             $rawMetData = file_get_contents($metUrl);
