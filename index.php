@@ -34,19 +34,19 @@ function run(ServerRequestInterface $request): ResponseInterface
                 $temp = null;
                 $humidity = null;
                 $precipitation = null;
-                if (!empty($weatherData['F']) && is_numeric($weatherData['F'])) {
+                if (isset($weatherData['F']) && is_numeric($weatherData['F'])) {
                     $feelsLike = (float)$weatherData['F'];
                 }
-                if (!empty($weatherData['T']) && is_numeric($weatherData['T'])) {
+                if (isset($weatherData['T']) && is_numeric($weatherData['T'])) {
                     $temp = (float)$weatherData['T'];
                 }
-                if (!empty($weatherData['H']) && is_numeric($weatherData['H'])) {
+                if (isset($weatherData['H']) && is_numeric($weatherData['H'])) {
                     $humidity = (int)$weatherData['H'];
                 }
-                if (!empty($weatherData['H']) && is_numeric($weatherData['H'])) {
+                if (isset($weatherData['H']) && is_numeric($weatherData['H'])) {
                     $humidity = (int)$weatherData['H'];
                 }
-                if (!empty($weatherData['Pp']) && is_numeric($weatherData['Pp'])) {
+                if (isset($weatherData['Pp']) && is_numeric($weatherData['Pp'])) {
                     $precipitation = (int)$weatherData['Pp'];
                 }
                 $bodyJson['data'] = [
