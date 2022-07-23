@@ -61,8 +61,8 @@ function run(ServerRequestInterface $request): ResponseInterface
                     'temp' => $temp,
                     'humidity' => $humidity,
                     'precipitation' => $precipitation,
-                    'valid_from' => $roundedDownTo3Hrs,
-                    'valid_to' => $roundedDownTo3Hrs+10800,
+                    'valid_from' => $adjustedTime,
+                    'valid_to' => $adjustedTime+10800,
                 ];
             }
         }
