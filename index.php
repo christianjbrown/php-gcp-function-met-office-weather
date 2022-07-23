@@ -20,7 +20,7 @@ function run(ServerRequestInterface $request): ResponseInterface
         $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
         $response = new Response(200, $headers, $body);
     } catch (Throwable $e) {
-        $response = new Response(500, $headers, 'An error occurred :(');
+        $response = new Response(500, $headers, 'An error occurred! :(');
     }
 
     return $response;
