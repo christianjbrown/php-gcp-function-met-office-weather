@@ -22,7 +22,7 @@ jobs:
       - id: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v0'
         with:
-          name: 'cloud-function-met-office-temps'
+          name: 'get-met-office-temps'
           entry_point: 'run'
           runtime: 'php81'
           region: 'europe-west2'
