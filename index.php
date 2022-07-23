@@ -66,7 +66,7 @@ function run(ServerRequestInterface $request): ResponseInterface
                 ];
             }
         }
-
+        $headers['Surrogate-Control'] = 'max-age=600';
         $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
         $response = new Response(200, $headers, $body);
     } catch (Throwable $e) {
