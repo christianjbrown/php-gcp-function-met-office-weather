@@ -27,7 +27,7 @@ jobs:
           runtime: 'php81'
           region: 'europe-west2'
           memory_mb: '128'
-          secret_environment_variables: 'MET_OFFICE_API_KEY=projects/358995629045/secrets/MetOfficeApiKey'
+          secret_environment_variables: 'MET_OFFICE_API_KEY=projects/358995629045/secrets/MetOfficeApiKey;MET_OFFICE_SITE_ID=projects/358995629045/secrets/MetOfficeSiteId'
           https_trigger_security_level: 'secure_always'
           timeout: 30
           min_instances: 0
