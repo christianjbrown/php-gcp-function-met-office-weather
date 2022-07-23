@@ -1,0 +1,36 @@
+name: 'Deploy'
+on:
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: 'actions/checkout@v3'
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: 'projects/358995629045/locations/global/workloadIdentityPools/github/providers/cloud-function-met-office-temps'
+          service_account: 'github@christianbrown.iam.gserviceaccount.com'
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloud-functions@v0'
+        with:
+          name: 'cloud-function-met-office-temps'
+          entry_point: 'run'
+          runtime: 'php81'
+          region: 'europe-west2'
+          memory_mb: '128'
+          secret_environment_variables: 'MET_OFFICE_API_KEY=projects/358995629045/secrets/MetOfficeApiKey'
+          https_trigger_security_level: 'secure_always'
+          timeout: 30
+          min_instances: 0
+          max_instances: 200
+      - id: 'test'
+        run: 'curl "${{ steps.deploy.outputs.url }}"'

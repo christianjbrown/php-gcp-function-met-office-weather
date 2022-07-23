@@ -1,0 +1,11 @@
+{
+    "require": {
+        "google/cloud-functions-framework": "^1.1"
+    },
+    "scripts": {
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} vendor/bin/router.php"
+        ]
+    }
+}
