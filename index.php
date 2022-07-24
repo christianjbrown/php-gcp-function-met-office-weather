@@ -30,7 +30,7 @@ function run(ServerRequestInterface $request): ResponseInterface
             if ($roundedDownDiff > $roundedUpDiff) {
                 $adjustedTime = $roundedUpTo3Hrs;
             } else {
-                $adjustedTime = $roundedDownDiff;
+                $adjustedTime = $roundedDownTo3Hrs;
             }
 
             $date = gmdate('Y-m-d\TH\Z', $adjustedTime);
