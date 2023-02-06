@@ -16,7 +16,7 @@ function run(ServerRequestInterface $request): ResponseInterface
         'data' => [],
         'success' => false,
         'timestamp' => time(),
-        'version' => getenv('K_REVISION'),
+        'version' => (int)getenv('K_REVISION'),
     ];
 
     try {
