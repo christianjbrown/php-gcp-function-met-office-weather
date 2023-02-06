@@ -12,11 +12,14 @@ function run(ServerRequestInterface $request): ResponseInterface
         'Content-Type' => 'application/json; charset=utf-8',
     ];
 
+    $bodyJson = [
+        'data' => [],
+        'success' => false,
+        'timestamp' => time(),
+        'version' => getenv('K_REVISION'),
+    ];
+
     try {
-        $bodyJson = [
-            'version' => getenv('K_REVISION'),
-            'timestamp' => time(),
-        ];
 
         if (!empty(getenv('MET_OFFICE_API_KEY') && is_string(getenv('MET_OFFICE_API_KEY'))) && !empty(getenv('MET_OFFICE_SITE_ID') && is_string(getenv('MET_OFFICE_SITE_ID')))) {
             $apiKey = getenv('MET_OFFICE_API_KEY');
@@ -64,6 +67,7 @@ function run(ServerRequestInterface $request): ResponseInterface
                     'valid_from' => $adjustedTime,
                     'valid_to' => $adjustedTime+10800,
                 ];
+                $bodyJson['success'] = true;
             }
         }
         $headers['Surrogate-Control'] = 'max-age=600';
@@ -71,7 +75,9 @@ function run(ServerRequestInterface $request): ResponseInterface
         $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
         $response = new Response(200, $headers, $body);
     } catch (Throwable $e) {
-        $response = new Response(500, $headers, 'An error occurred! :(');
+        $bodyJson['error'] = 'Could not reach MET Office Data API to get the latest weather data';
+        $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
+        $response = new Response(500, $headers, $body);
     }
 
     return $response;
