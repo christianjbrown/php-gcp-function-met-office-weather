@@ -1,11 +1,40 @@
 {
     "require": {
-        "google/cloud-functions-framework": "^1.1"
+        "php": "~8.2",
+        "christianjbrown/cloud-function": "dev-main",
+        "christianjbrown/met-office-api": "dev-main",
+        "christianjbrown/user-friendly-exception": "dev-main",
+        "google/cloud-functions-framework": "^1.1",
+        "psr/http-client": "^1.0"
     },
+    "minimum-stability": "dev",
     "scripts": {
         "start": [
             "Composer\\Config::disableProcessTimeout",
-            "FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} vendor/bin/router.php"
+            "(export $(cat .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} vendor/bin/router.php)"
         ]
-    }
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/cloud-function.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/user-friendly-exception.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/json-api-client.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/met-office-api.git"
+        }
+    ]
 }

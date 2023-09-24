@@ -1,9 +1,0 @@
-.phpunit.cache
-
-composer.lock
-phpcs.xml
-phpunit.xml
-psalm.xml
-
-coverage
-vendor

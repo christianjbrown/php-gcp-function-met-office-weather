@@ -1,84 +1,19 @@
 <?php
 
-use Psr\Http\Message\ServerRequestInterface;
+declare(strict_types=1);
+
+date_default_timezone_set('UTC');
+
+use ChristianBrown\CloudFunction\CloudFunction;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ServerRequestInterface;
 
 function run(ServerRequestInterface $request): ResponseInterface
 {
-    $headers = [
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Allow-Methods' => 'GET, OPTIONS',
-        'Content-Type' => 'application/json; charset=utf-8',
-    ];
-
-    $bodyJson = [
-        'data' => [],
-        'success' => false,
-        'timestamp' => time(),
-        'version' => (int)getenv('K_REVISION'),
-    ];
-
-    try {
-
-        if (!empty(getenv('MET_OFFICE_API_KEY') && is_string(getenv('MET_OFFICE_API_KEY'))) && !empty(getenv('MET_OFFICE_SITE_ID') && is_string(getenv('MET_OFFICE_SITE_ID')))) {
-            $apiKey = getenv('MET_OFFICE_API_KEY');
-            $siteId = getenv('MET_OFFICE_SITE_ID');
-
-            $time = time();
-            $roundedDownTo3Hrs = ($time - ($time % 10800));
-            $roundedUpTo3Hrs = ($roundedDownTo3Hrs + 10800);
-            $roundedDownDiff = $time - $roundedDownTo3Hrs;
-            $roundedUpDiff = $roundedUpTo3Hrs - $time;
-            if ($roundedDownDiff > $roundedUpDiff) {
-                $adjustedTime = $roundedUpTo3Hrs;
-            } else {
-                $adjustedTime = $roundedDownTo3Hrs;
-            }
-
-            $date = gmdate('Y-m-d\TH\Z', $adjustedTime);
-
-            $metUrl = sprintf('http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/%s?res=3hourly&time=%s&key=%s', $siteId, $date, $apiKey);
-            $rawMetData = file_get_contents($metUrl);
-            $metData = json_decode($rawMetData, true, 512, JSON_THROW_ON_ERROR);
-            if (is_array($metData) && !empty($metData['SiteRep']['DV']['Location']['Period']['Rep']) && is_array($metData['SiteRep']['DV']['Location']['Period']['Rep'])) {
-                $weatherData = $metData['SiteRep']['DV']['Location']['Period']['Rep'];
-                $tempFeelsLike = null;
-                $temp = null;
-                $humidity = null;
-                $precipitation = null;
-                if (isset($weatherData['F']) && is_numeric($weatherData['F'])) {
-                    $tempFeelsLike = (float)$weatherData['F'];
-                }
-                if (isset($weatherData['T']) && is_numeric($weatherData['T'])) {
-                    $temp = (float)$weatherData['T'];
-                }
-                if (isset($weatherData['H']) && is_numeric($weatherData['H'])) {
-                    $humidity = (int)$weatherData['H'];
-                }
-                if (isset($weatherData['Pp']) && is_numeric($weatherData['Pp'])) {
-                    $precipitation = (int)$weatherData['Pp'];
-                }
-                $bodyJson['data'] = [
-                    'temp_feels_like' => $tempFeelsLike,
-                    'temp' => $temp,
-                    'humidity' => $humidity,
-                    'precipitation' => $precipitation,
-                    'valid_from' => $adjustedTime,
-                    'valid_to' => $adjustedTime+10800,
-                ];
-                $bodyJson['success'] = true;
-            }
-        }
-        $headers['Surrogate-Control'] = 'max-age=600';
-        $headers['Cache-Control'] = 's-maxage=600, max-age=0';
-        $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
-        $response = new Response(200, $headers, $body);
-    } catch (Throwable $e) {
-        $bodyJson['error'] = 'Could not reach MET Office Data API to get the latest weather data';
-        $body = json_encode($bodyJson, JSON_THROW_ON_ERROR);
-        $response = new Response(500, $headers, $body);
-    }
+    $env = getenv();
+    $dataProvider = new DataProvider();
+    $cloudFunction = new CloudFunction($dataProvider, $env);
+    $response = $cloudFunction->run($request);
 
     return $response;
 }
