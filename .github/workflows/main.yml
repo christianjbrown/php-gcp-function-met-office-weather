@@ -29,7 +29,6 @@ jobs:
           build_environment_variables: 'COMPOSER_AUTH={"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
           deploy_timeout: 600
           entry_point: 'run'
-          env_vars: 'GCP_SECRET_ETSY_REFRESH_TOKEN_PATH=projects/${{ vars.GCP_PROJECT_ID }}/secrets/ETSY_REFRESH_TOKEN'
           https_trigger_security_level: 'secure_always'
           max_instances: 1
           memory_mb: '128'
