@@ -22,6 +22,7 @@ jobs:
           workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/${{ vars.GCP_WIF_POOL }}/providers/${{ vars.GCP_WIF_PROVIDER }}'
           service_account: '${{ vars.GCP_SERVICE_ACCOUNT }}'
       - name: 'Create or update Cloud Function'
+        id: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v0'
         with:
           name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
