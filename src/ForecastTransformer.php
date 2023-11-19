@@ -6,7 +6,7 @@ use ChristianBrown\MetOffice\DataPoint\Forecast\Model\Forecast;
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\ForecastLocationPeriod;
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\ForecastLocationShortPeriodRepresentation;
 
-final class DataTransformer implements DataTransformerInterface
+final class ForecastTransformer implements ForecastTransformerInterface
 {
     public function transform(Forecast $forecast): array
     {

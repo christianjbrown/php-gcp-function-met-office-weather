@@ -2,27 +2,26 @@
 
 declare(strict_types=1);
 
-use ChristianBrown\CloudFunction\DataProviderInterface;
 use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApiInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class DataProvider implements DataProviderInterface
 {
     private ConfigInterface $config;
-    private DataTransformerInterface $dataTransformer;
+    private ForecastTransformerInterface $forecastTransformer;
     private ThreeHourlySiteForecastApiInterface $threeHourlySiteForecastApi;
 
-    public function __construct(ConfigInterface $config, DataTransformerInterface $dataTransformer, ThreeHourlySiteForecastApiInterface $threeHourlyForecastApi)
+    public function __construct(ConfigInterface $config, ForecastTransformerInterface $forecastTransformer, ThreeHourlySiteForecastApiInterface $threeHourlyForecastApi)
     {
         $this->config = $config;
-        $this->dataTransformer = $dataTransformer;
+        $this->forecastTransformer = $forecastTransformer;
         $this->threeHourlySiteForecastApi = $threeHourlyForecastApi;
     }
 
     public function getData(ServerRequestInterface $request): array
     {
         $forecast = $this->threeHourlySiteForecastApi->getOnePeriod($this->config->getSiteId());
-        $data = $this->dataTransformer->transform($forecast);
+        $data = $this->forecastTransformer->transform($forecast);
 
         return $data;
     }

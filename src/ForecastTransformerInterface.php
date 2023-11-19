@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\Forecast;
 
-interface DataTransformerInterface
+interface ForecastTransformerInterface
 {
     public const RESPONSE_KEY_FEELS_LIKE = 'temp_feels_like';
     public const RESPONSE_KEY_MAX_UV_INDEX = 'uv_index';
@@ -21,5 +21,5 @@ interface DataTransformerInterface
     public const RESPONSE_KEY_WIND_GUST = 'wind_gust';
     public const RESPONSE_KEY_WIND_SPEED = 'wind_speed';
 
-    public function transform(Forecast $location): array;
+    public function transform(Forecast $forecast): array;
 }

@@ -13,14 +13,13 @@ use Psr\Http\Message\ServerRequestInterface;
 function run(ServerRequestInterface $request): ResponseInterface
 {
     $env = getenv();
-
     $functionConfigTransformer = new FunctionConfigTransformer();
     $configTransformer = new ConfigTransformer($functionConfigTransformer);
     $config = $configTransformer->transform($env);
-    $dataTransformer = new DataTransformer();
+    $forecastTransformer = new ForecastTransformer();
     $threeHourlyForecastApi = new ThreeHourlySiteForecastApi($config->getApiKey());
 
-    $dataProvider = new DataProvider($config, $dataTransformer, $threeHourlyForecastApi);
+    $dataProvider = new DataProvider($config, $forecastTransformer, $threeHourlyForecastApi);
     $cloudFunction = new CloudFunction($dataProvider, $config->getFunctionConfig());
     $response = $cloudFunction->run($request);
 
