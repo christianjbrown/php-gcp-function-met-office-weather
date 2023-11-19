@@ -29,6 +29,7 @@ jobs:
           build_environment_variables: 'COMPOSER_AUTH={"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
           deploy_timeout: 600
           entry_point: 'run'
+          env_vars: 'USE_CACHE_TTL=300,USE_CACHE_BUT_REQUEST_TTL=600,USE_CACHE_IF_ERROR_TTL=3600'
           https_trigger_security_level: 'secure_always'
           max_instances: 1
           memory_mb: '128'

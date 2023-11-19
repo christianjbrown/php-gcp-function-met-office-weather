@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:christianjbrown/cloud-function.git",
-                "reference": "f0778e019f901e5453d0050f56932e9a6bfc7f71"
+                "reference": "015e1e31c0e82a7788fbed04c8a539d4a49f0228"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/cloud-function/zipball/f0778e019f901e5453d0050f56932e9a6bfc7f71",
-                "reference": "f0778e019f901e5453d0050f56932e9a6bfc7f71",
+                "url": "https://api.github.com/repos/christianjbrown/cloud-function/zipball/015e1e31c0e82a7788fbed04c8a539d4a49f0228",
+                "reference": "015e1e31c0e82a7788fbed04c8a539d4a49f0228",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "source": "https://github.com/christianjbrown/cloud-function/tree/main",
                 "issues": "https://github.com/christianjbrown/cloud-function/issues"
             },
-            "time": "2023-11-18T22:38:51+00:00"
+            "time": "2023-11-19T01:34:05+00:00"
         },
         {
             "name": "christianjbrown/json-api-client",
