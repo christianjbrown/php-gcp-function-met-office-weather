@@ -17,6 +17,7 @@ interface ForecastTransformerInterface
     public const RESPONSE_KEY_VALID_TO_ISO8601 = 'valid_to_iso8601';
     public const RESPONSE_KEY_VISIBILITY = 'visibility';
     public const RESPONSE_KEY_WEATHER_TYPE = 'type';
+    public const RESPONSE_KEY_WEATHER_TYPE_EMOJI = 'type_emoji';
     public const RESPONSE_KEY_WEATHER_TYPE_STRING = 'type_string';
     public const RESPONSE_KEY_WIND_DIRECTION = 'wind_direction';
     public const RESPONSE_KEY_WIND_GUST = 'wind_gust';

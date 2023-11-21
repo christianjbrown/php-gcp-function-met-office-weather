@@ -42,6 +42,7 @@ final class ForecastTransformer implements ForecastTransformerInterface
                     self::RESPONSE_KEY_VALID_TO_ISO8601 => date('c', $validTo),
                     self::RESPONSE_KEY_VISIBILITY => $rep->visibility,
                     self::RESPONSE_KEY_WEATHER_TYPE => $rep->weatherType,
+                    self::RESPONSE_KEY_WEATHER_TYPE_EMOJI => $this->weatherTypeTransformer->transformToEmoji($rep->weatherType),
                     self::RESPONSE_KEY_WEATHER_TYPE_STRING => $this->weatherTypeTransformer->transform($rep->weatherType),
                     self::RESPONSE_KEY_WIND_DIRECTION => $rep->windDirection,
                     self::RESPONSE_KEY_WIND_GUST => $rep->windGust,

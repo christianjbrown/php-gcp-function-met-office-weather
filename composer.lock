@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:christianjbrown/met-office-api.git",
-                "reference": "e3bc43749aa6795d2bf2fe180df60ce5080b019c"
+                "reference": "9f0f57586af02adfb6deb00cc304e53941d76c3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/met-office-api/zipball/e3bc43749aa6795d2bf2fe180df60ce5080b019c",
-                "reference": "e3bc43749aa6795d2bf2fe180df60ce5080b019c",
+                "url": "https://api.github.com/repos/christianjbrown/met-office-api/zipball/9f0f57586af02adfb6deb00cc304e53941d76c3d",
+                "reference": "9f0f57586af02adfb6deb00cc304e53941d76c3d",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,7 @@
                 "source": "https://github.com/christianjbrown/met-office-api/tree/main",
                 "issues": "https://github.com/christianjbrown/met-office-api/issues"
             },
-            "time": "2023-11-21T02:46:20+00:00"
+            "time": "2023-11-21T19:01:23+00:00"
         },
         {
             "name": "christianjbrown/user-friendly-exception",
@@ -971,12 +971,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:christianjbrown/php-cs-fixer-wrapper.git",
-                "reference": "32420482ce6c756d633a2042b9768d151a3f80f1"
+                "reference": "acfb4012177cea393d772e12f2c62afcf442c546"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-cs-fixer-wrapper/zipball/32420482ce6c756d633a2042b9768d151a3f80f1",
-                "reference": "32420482ce6c756d633a2042b9768d151a3f80f1",
+                "url": "https://api.github.com/repos/christianjbrown/php-cs-fixer-wrapper/zipball/acfb4012177cea393d772e12f2c62afcf442c546",
+                "reference": "acfb4012177cea393d772e12f2c62afcf442c546",
                 "shasum": ""
             },
             "require": {
@@ -999,7 +999,7 @@
                 "source": "https://github.com/christianjbrown/php-cs-fixer-wrapper/tree/main",
                 "issues": "https://github.com/christianjbrown/php-cs-fixer-wrapper/issues"
             },
-            "time": "2023-10-01T12:05:40+00:00"
+            "time": "2023-11-21T18:57:54+00:00"
         },
         {
             "name": "composer/pcre",
@@ -1227,12 +1227,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "db9760df2594220f95b954fbe088f45921501cd2"
+                "reference": "b8ff1a45fe99b27b6d5d8a5159b5086889815df9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/db9760df2594220f95b954fbe088f45921501cd2",
-                "reference": "db9760df2594220f95b954fbe088f45921501cd2",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/b8ff1a45fe99b27b6d5d8a5159b5086889815df9",
+                "reference": "b8ff1a45fe99b27b6d5d8a5159b5086889815df9",
                 "shasum": ""
             },
             "require": {
@@ -1313,7 +1313,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-20T23:20:54+00:00"
+            "time": "2023-11-21T12:38:33+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1557,12 +1557,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "84838eed9ded511f61dc3e8b5944a52d9017b297"
+                "reference": "1f2a995f18bd0af9388611fbf52ee1bd97fae7e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/84838eed9ded511f61dc3e8b5944a52d9017b297",
-                "reference": "84838eed9ded511f61dc3e8b5944a52d9017b297",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/1f2a995f18bd0af9388611fbf52ee1bd97fae7e6",
+                "reference": "1f2a995f18bd0af9388611fbf52ee1bd97fae7e6",
                 "shasum": ""
             },
             "require": {
@@ -1620,7 +1620,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.1.8"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/main"
             },
             "funding": [
                 {
@@ -1628,7 +1628,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-15T13:31:15+00:00"
+            "time": "2023-11-21T15:27:12+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

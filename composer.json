@@ -11,7 +11,7 @@
     "scripts": {
         "start": [
             "Composer\\Config::disableProcessTimeout",
-            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} vendor/bin/router.php)"
+            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8081} vendor/bin/router.php)"
         ],
         "test": [
             "./vendor/bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
