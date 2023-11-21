@@ -7,6 +7,7 @@ date_default_timezone_set('UTC');
 use ChristianBrown\CloudFunction\CloudFunction;
 use ChristianBrown\CloudFunction\FunctionConfigTransformer;
 use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApi;
+use ChristianBrown\MetOffice\DataPoint\Forecast\Transformer\WeatherTypeTransformer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -16,7 +17,9 @@ function run(ServerRequestInterface $request): ResponseInterface
     $functionConfigTransformer = new FunctionConfigTransformer();
     $configTransformer = new ConfigTransformer($functionConfigTransformer);
     $config = $configTransformer->transform($env);
-    $forecastTransformer = new ForecastTransformer();
+
+    $weatherTypeTransformer = new WeatherTypeTransformer();
+    $forecastTransformer = new ForecastTransformer($weatherTypeTransformer);
     $threeHourlyForecastApi = new ThreeHourlySiteForecastApi($config->getApiKey());
 
     $dataProvider = new DataProvider($config, $forecastTransformer, $threeHourlyForecastApi);
