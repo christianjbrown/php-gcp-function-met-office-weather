@@ -7,26 +7,29 @@
         "google/cloud-functions-framework": "^1.1",
         "psr/http-client": "^1.0"
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "minimum-stability": "dev",
     "scripts": {
         "start": [
             "Composer\\Config::disableProcessTimeout",
-            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8081} vendor/bin/router.php)"
+            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} bin/router.php)"
         ],
         "test": [
-            "./vendor/bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
+            "./bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
         ],
-        "fix": [
-            "./vendor/bin/php-cs-fixer fix ./src ./tests -vvv --config=vendor/christianjbrown/php-cs-fixer-wrapper/rule-sets/risky.php"
+        "check-style": [
+            "./bin/phpcs --standard=vendor/christianjbrown/phpcs-wrapper/standards/ChristianBrown/ruleset.xml ./src ./tests"
         ],
-        "fix-test": [
-            "@fix",
-            "@test"
+        "fix-style": [
+            "./bin/php-cs-fixer fix ./src ./tests index.php -vvv --config=vendor/christianjbrown/php-cs-fixer-wrapper/rule-sets/risky.php"
         ]
     },
     "autoload": {
         "psr-4": {
-            "": "src/"
+            "ChristianBrown\\GetMetOfficeTemps\\": "src/",
+            "ChristianBrown\\GetMetOfficeTemps\\Tests\\": "tests/"
         }
     },
     "repositories": [
@@ -49,10 +52,19 @@
         {
             "type": "github",
             "url": "git@github.com:christianjbrown/php-cs-fixer-wrapper.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/phpcs-wrapper.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/git-php-wrapper.git"
         }
     ],
     "require-dev": {
         "phpunit/phpunit": "^11.0@dev",
+        "christianjbrown/phpcs-wrapper": "dev-main",
         "christianjbrown/php-cs-fixer-wrapper": "dev-main"
     }
 }

@@ -1,9 +1,6 @@
-name: 'Deploy Cloud Function'
 on:
   push:
-    branches: [ 'main' ]
-  pull_request:
-    branches: [ 'main' ]
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
@@ -15,17 +12,18 @@ jobs:
       id-token: 'write'
     steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v3'
+        uses: 'actions/checkout@v4'
+
       - name: 'Authenticate with GCP'
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/${{ vars.GCP_WIF_POOL }}/providers/${{ vars.GCP_WIF_PROVIDER }}'
           service_account: '${{ vars.GCP_SERVICE_ACCOUNT }}'
+
       - name: 'Create or update Cloud Function'
         id: 'deploy'
-        uses: 'google-github-actions/deploy-cloud-functions@v0'
+        uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
-          name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
           build_environment_variables: 'COMPOSER_AUTH={"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
           deploy_timeout: 600
           entry_point: 'run'
@@ -34,9 +32,11 @@ jobs:
           max_instances: 1
           memory_mb: '128'
           min_instances: 0
+          name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
           region: 'europe-west2'
           runtime: 'php82'
           secret_environment_variables: 'SITE_ID=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_SITE_ID,API_KEY=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_API_KEY,REQUIRED_HEADER_KEY=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_HEADER_KEY,REQUIRED_HEADER_VALUE=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_HEADER_VALUE,REQUIRED_ORIGIN=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_ORIGIN'
           timeout: 60
+
       - name: 'Test Cloud Function'
         run: 'curl "${{ steps.deploy.outputs.url }}"'

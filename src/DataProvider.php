@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace ChristianBrown\GetMetOfficeTemps;
+
 use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApiInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

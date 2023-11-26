@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace ChristianBrown\GetMetOfficeTemps;
+
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\Forecast;
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\ForecastLocationPeriod;
 use ChristianBrown\MetOffice\DataPoint\Forecast\Model\ForecastLocationShortPeriodRepresentation;

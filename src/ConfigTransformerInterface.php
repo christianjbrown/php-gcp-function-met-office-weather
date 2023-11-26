@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace ChristianBrown\GetMetOfficeTemps;
+
 interface ConfigTransformerInterface
 {
     public const ENV_API_KEY = 'API_KEY';

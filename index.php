@@ -6,6 +6,9 @@ date_default_timezone_set('UTC');
 
 use ChristianBrown\CloudFunction\CloudFunction;
 use ChristianBrown\CloudFunction\FunctionConfigTransformer;
+use ChristianBrown\GetMetOfficeTemps\ConfigTransformer;
+use ChristianBrown\GetMetOfficeTemps\DataProvider;
+use ChristianBrown\GetMetOfficeTemps\ForecastTransformer;
 use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApi;
 use ChristianBrown\MetOffice\DataPoint\Forecast\Transformer\WeatherTypeTransformer;
 use Psr\Http\Message\ResponseInterface;

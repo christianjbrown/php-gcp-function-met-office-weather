@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace ChristianBrown\GetMetOfficeTemps;
+
 use ChristianBrown\CloudFunction\FunctionConfigTransformerInterface;
 
 final class ConfigTransformer implements ConfigTransformerInterface

@@ -6,10 +6,7 @@
 .local.env
 .phpunit.cache
 .phpunit.cache/
-bin/php-cs-fix
-bin/php-cs-fix-diff
-bin/php-cs-fixer
-bin/phpcbf
-bin/phpcs
+bin
+bin/
 vendor
 vendor/
