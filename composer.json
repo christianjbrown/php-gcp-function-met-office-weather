@@ -7,23 +7,20 @@
         "google/cloud-functions-framework": "^1.1",
         "psr/http-client": "^1.0"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "minimum-stability": "dev",
     "scripts": {
         "start": [
             "Composer\\Config::disableProcessTimeout",
-            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} bin/router.php)"
+            "(export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -S localhost:${PORT:-8080} ./vendor/bin/router.php)"
         ],
         "test": [
-            "./bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
+            "./vendor/bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
         ],
         "check-style": [
-            "./bin/phpcs --standard=vendor/christianjbrown/phpcs-wrapper/standards/ChristianBrown/ruleset.xml ./src ./tests"
+            "./vendor/bin/phpcs --standard=vendor/christianjbrown/phpcs-wrapper/standards/ChristianBrown/ruleset.xml ./src ./tests"
         ],
         "fix-style": [
-            "./bin/php-cs-fixer fix ./src ./tests index.php -vvv --config=vendor/christianjbrown/php-cs-fixer-wrapper/rule-sets/risky.php"
+            "./vendor/bin/php-cs-fixer fix ./src ./tests index.php -vvv --config=vendor/christianjbrown/php-cs-fixer-wrapper/rule-sets/risky.php"
         ]
     },
     "autoload": {
