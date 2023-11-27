@@ -1,7 +1,7 @@
 name: 'Deploy Cloud Function'
 on:
   push:
-    branches: [ 'main' ]
+    branches: ['main']
   workflow_dispatch:
 
 jobs:
@@ -25,7 +25,6 @@ jobs:
         id: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v0'
         with:
-          name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
           build_environment_variables: 'COMPOSER_AUTH={"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
           deploy_timeout: 600
           entry_point: 'run'
@@ -34,6 +33,7 @@ jobs:
           max_instances: 1
           memory_mb: '128'
           min_instances: 0
+          name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
           region: 'europe-west2'
           runtime: 'php82'
           secret_environment_variables: 'SITE_ID=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_SITE_ID,API_KEY=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_API_KEY,REQUIRED_HEADER_KEY=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_HEADER_KEY,REQUIRED_HEADER_VALUE=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_HEADER_VALUE,REQUIRED_ORIGIN=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_REQUIRED_ORIGIN'
