@@ -1,0 +1,25 @@
+on:
+  pull_request:
+    branches: ['main']
+
+jobs:
+  on-push-checks:
+    name: "On-push checks"
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - name: "Checkout code"
+        uses: "actions/checkout@v4"
+
+      - name: "Install dependencies"
+        env:
+          COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
+        run: 'composer update'
+
+      - name: "Run PHPCS checks"
+        run: "composer check-style"
+
+      - name: "Run PHPUnit tests"
+        env:
+          XDEBUG_MODE: "coverage"
+        run: "./bin/phpunit"
