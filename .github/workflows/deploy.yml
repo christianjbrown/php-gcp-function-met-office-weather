@@ -12,17 +12,17 @@ jobs:
       id-token: 'write'
     steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@v3'
+        uses: 'actions/checkout@v4'
 
       - name: 'Authenticate with GCP'
-        uses: 'google-github-actions/auth@v0'
+        uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/${{ vars.GCP_WIF_POOL }}/providers/${{ vars.GCP_WIF_PROVIDER }}'
           service_account: '${{ vars.GCP_SERVICE_ACCOUNT }}'
 
       - name: 'Create or update Cloud Function'
         id: 'deploy'
-        uses: 'google-github-actions/deploy-cloud-functions@v0'
+        uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
           build_environment_variables: 'COMPOSER_AUTH={"github-oauth":{"github.com":"${{ secrets.COMPOSER_GITHUB_TOKEN }}"}}'
           deploy_timeout: 600
@@ -31,7 +31,7 @@ jobs:
           https_trigger_security_level: 'secure_always'
           max_instances: 1
           memory_mb: '128'
-          min_instances: 0
+          min_instances: 1
           name: '${{ vars.GCP_CLOUD_FUNCTION_ENDPOINT }}'
           region: 'europe-west2'
           runtime: 'php82'
