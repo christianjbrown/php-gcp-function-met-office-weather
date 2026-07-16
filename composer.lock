@@ -170,13 +170,13 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@github.com:christianjbrown/php-met-office-api-lib.git",
-                "reference": "0deba7e731fb40ad07e810e5aca64ea3127e0d11"
+                "url": "https://github.com/christianjbrown/php-met-office-api-lib.git",
+                "reference": "b465dcdd396ec3a1318ed9c66e4e646ea527186c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-met-office-api-lib/zipball/0deba7e731fb40ad07e810e5aca64ea3127e0d11",
-                "reference": "0deba7e731fb40ad07e810e5aca64ea3127e0d11",
+                "url": "https://api.github.com/repos/christianjbrown/php-met-office-api-lib/zipball/b465dcdd396ec3a1318ed9c66e4e646ea527186c",
+                "reference": "b465dcdd396ec3a1318ed9c66e4e646ea527186c",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
                     "name": "Christian Brown"
                 }
             ],
-            "description": "A strongly-typed, read-only PHP 8.5+ client for the Met Office Weather DataHub Site-Specific API that returns typed forecast model objects instead of raw arrays.",
+            "description": "A strongly-typed PHP client for the Met Office Weather DataHub APIs (currently the Site-Specific / Global Spot forecast), returning typed models instead of raw GeoJSON.",
             "keywords": [
                 "api",
                 "client",
@@ -241,7 +241,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-met-office-api-lib/tree/main"
             },
-            "time": "2026-07-16T13:07:43+00:00"
+            "time": "2026-07-16T14:30:35+00:00"
         },
         {
             "name": "christianjbrown/php-user-friendly-exception-lib",

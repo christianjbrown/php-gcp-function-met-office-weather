@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather;
 
-use ChristianBrown\MetOffice\Model\HourlyForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 
 interface OutputTransformerInterface
 {

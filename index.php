@@ -21,8 +21,8 @@ function run(ServerRequestInterface $request): ResponseInterface
     $configTransformer = new ConfigTransformer($functionConfigTransformer);
     $config = $configTransformer->transform($env);
 
-    $metOffice = new MetOffice($config->getApiKey());
-    $hourlyApi = $metOffice->getHourlyForecastApi();
+    $metOffice = new MetOffice();
+    $hourlyApi = $metOffice->siteSpecific($config->getApiKey())->getHourlyForecastApi();
 
     $outputTransformer = new OutputTransformer(new WeatherTypeTransformer());
 

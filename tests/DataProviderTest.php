@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather\Tests;
 
-use ChristianBrown\MetOffice\Api\HourlyForecastApiInterface;
-use ChristianBrown\MetOffice\Model\ForecastInterface;
-use ChristianBrown\MetOffice\Model\ForecastTimeStepInterface;
-use ChristianBrown\MetOffice\Model\HourlyForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Api\HourlyForecastApiInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 use ChristianBrown\MetOfficeWeather\DataProvider;
 use ChristianBrown\MetOfficeWeather\DataProviderInterface;
 use ChristianBrown\MetOfficeWeather\OutputTransformerInterface;
