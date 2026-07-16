@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather;
 
-use ChristianBrown\MetOffice\Api\HourlyForecastApiInterface;
-use ChristianBrown\MetOffice\Model\ForecastTimeStepInterface;
-use ChristianBrown\MetOffice\Model\HourlyForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Api\HourlyForecastApiInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 use ChristianBrown\UserFriendlyException\UserFriendlyException;
 use Psr\Http\Message\ServerRequestInterface;
 

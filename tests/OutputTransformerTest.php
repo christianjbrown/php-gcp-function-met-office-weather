@@ -6,7 +6,7 @@ namespace ChristianBrown\MetOfficeWeather\Tests;
 
 use ChristianBrown\MetOffice\Enums\WeatherType;
 use ChristianBrown\MetOffice\Enums\WindDirection;
-use ChristianBrown\MetOffice\Model\HourlyForecastTimeStepInterface;
+use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformerInterface;
 use ChristianBrown\MetOfficeWeather\OutputTransformer;
 use ChristianBrown\MetOfficeWeather\OutputTransformerInterface;
