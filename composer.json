@@ -1,0 +1,96 @@
+{
+    "name": "christianjbrown/php-gcp-function-met-office-weather",
+    "description": "A PHP 8.5+ Google Cloud Function that reads the current outdoor weather from the Met Office Weather DataHub Site-Specific hourly API and returns it as a JSON envelope.",
+    "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "google-cloud",
+        "cloud-run",
+        "cloud-functions",
+        "serverless",
+        "met-office",
+        "weather",
+        "forecast"
+    ],
+    "authors": [
+        {
+            "name": "Christian Brown"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "christianjbrown/php-gcp-function-lib": "dev-main",
+        "christianjbrown/php-met-office-api-lib": "dev-main",
+        "christianjbrown/php-user-friendly-exception-lib": "dev-main",
+        "google/cloud-functions-framework": "^1.1",
+        "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+        "christianjbrown/php-code-quality-scripts": "dev-main",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ChristianBrown\\MetOfficeWeather\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ChristianBrown\\MetOfficeWeather\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "clear && (export $(grep -v '^#' .local.env | xargs) && FUNCTION_SOURCE=index.php FUNCTION_TARGET=run FUNCTION_SIGNATURE_TYPE=http php -d error_reporting=\"E_ALL & ~E_DEPRECATED\" -S localhost:${PORT:-8080} ./vendor/bin/router.php)"
+        ],
+        "test": [
+            "clear && XDEBUG_MODE=coverage php -d memory_limit=-1 ./bin/phpunit && open ./.phpunit.cache/code-coverage-html/index.html"
+        ],
+        "stan": [
+            "clear && ./bin/phpstan analyse"
+        ],
+        "check-style": [
+            "clear && ./bin/php-cs ./src ./tests"
+        ],
+        "check-style-diff": [
+            "clear && ./bin/php-cs-diff"
+        ],
+        "fix-style": [
+            "clear && ./bin/php-cs-fix ./src ./tests"
+        ],
+        "fix-style-diff": [
+            "clear && ./bin/php-cs-fix-diff"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin",
+        "platform": {
+            "php": "8.5.0"
+        }
+    },
+    "repositories": [
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-gcp-function-lib.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-met-office-api-lib.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-user-friendly-exception-lib.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-api-client-lib.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-code-quality-scripts.git"
+        }
+    ],
+    "minimum-stability": "dev"
+}
