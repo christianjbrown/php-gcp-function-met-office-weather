@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb739188bb7a572dd21f95a554ec6917",
+    "content-hash": "c22042ea4987cc8e05fd1900e215969f",
     "packages": [
         {
             "name": "christianjbrown/php-api-client-lib",
@@ -166,17 +166,17 @@
             "time": "2026-07-16T01:20:59+00:00"
         },
         {
-            "name": "christianjbrown/php-met-office-api-lib",
+            "name": "christianjbrown/php-met-office-weather-datahub-api-lib",
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/christianjbrown/php-met-office-api-lib.git",
-                "reference": "6a3e01da6cb2a54f50884afbf8a9c6f2ea38fe53"
+                "url": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib.git",
+                "reference": "3eaf530bcd09825718a323fcd793943b368ad831"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-met-office-api-lib/zipball/6a3e01da6cb2a54f50884afbf8a9c6f2ea38fe53",
-                "reference": "6a3e01da6cb2a54f50884afbf8a9c6f2ea38fe53",
+                "url": "https://api.github.com/repos/christianjbrown/php-met-office-weather-datahub-api-lib/zipball/3eaf530bcd09825718a323fcd793943b368ad831",
+                "reference": "3eaf530bcd09825718a323fcd793943b368ad831",
                 "shasum": ""
             },
             "require": {
@@ -239,9 +239,9 @@
                 "weather"
             ],
             "support": {
-                "source": "https://github.com/christianjbrown/php-met-office-api-lib/tree/main"
+                "source": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib/tree/main"
             },
-            "time": "2026-07-16T14:57:00+00:00"
+            "time": "2026-07-16T15:18:59+00:00"
         },
         {
             "name": "christianjbrown/php-user-friendly-exception-lib",
@@ -5993,7 +5993,7 @@
     "stability-flags": {
         "christianjbrown/php-code-quality-scripts": 20,
         "christianjbrown/php-gcp-function-lib": 20,
-        "christianjbrown/php-met-office-api-lib": 20,
+        "christianjbrown/php-met-office-weather-datahub-api-lib": 20,
         "christianjbrown/php-user-friendly-exception-lib": 20
     },
     "prefer-stable": false,
