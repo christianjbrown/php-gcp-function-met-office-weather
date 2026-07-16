@@ -132,12 +132,6 @@ composer fix-style-diff    # auto-fix changed files only
 - **`.github/workflows/ci.yml`** runs on pull requests to `main`: `composer install`, PHPCS, PHPStan, and PHPUnit.
 - **`.github/workflows/deploy.yml`** runs on push to `main`: deploys to Google Cloud Functions 2nd gen (`php85` runtime, `europe-west2`, function name `get-met-office-weather`) via Workload Identity Federation, grants public (`allUsers`) invoker access on the underlying Cloud Run service, smoke-tests the deployed URL, then purges the Fastly edge cache.
 
-Both workflows install the private `christianjbrown/*` dependencies using a `COMPOSER_AUTH` repository secret — a Composer auth JSON containing a GitHub token with read access to those repos:
-
-```json
-{"github-oauth":{"github.com":"your-github-token"}}
-```
-
 The Met Office API key, latitude, longitude, and request-gating values are supplied at deploy time from Google Secret Manager (see `deploy.yml`).
 
 
@@ -147,7 +141,7 @@ The Met Office API key, latitude, longitude, and request-gating values are suppl
 The entry point is `run()` in [`index.php`](index.php), which wires the pieces together:
 
 - **`ConfigTransformer`** reads the environment into a `Config` (API key, latitude, longitude + request/caching config).
-- **`MetOffice`** (from [`christianjbrown/php-met-office-api-lib`](https://github.com/christianjbrown/php-met-office-api-lib)) provides the hourly forecast API client.
+- **`MetOffice`** (from [`christianjbrown/php-met-office-weather-datahub-api-lib`](https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib)) provides the hourly forecast API client.
 - **`DataProvider`** fetches the hourly forecast for the configured location and selects the current hour's step.
 - **`OutputTransformer`** shapes that step into the JSON response, converting wind speeds to mph and mapping the weather code to a name and emoji via the library's `WeatherTypeTransformer`.
 - **`CloudFunction`** (from [`christianjbrown/php-gcp-function-lib`](https://github.com/christianjbrown/php-gcp-function-lib)) handles the HTTP request/response, header/origin gating, and caching headers.
