@@ -22,6 +22,7 @@ interface OutputTransformerInterface
     public const KEY_VALID_TO_ISO8601 = 'valid_to_iso8601';
     public const KEY_VISIBILITY = 'visibility';
     public const KEY_WIND_DIRECTION = 'wind_direction';
+    public const KEY_WIND_DIRECTION_DEGREES = 'wind_direction_degrees';
     public const KEY_WIND_GUST = 'wind_gust';
     public const KEY_WIND_SPEED = 'wind_speed';
     public const METRES_PER_SECOND_TO_MPH = 2.2369362920544;

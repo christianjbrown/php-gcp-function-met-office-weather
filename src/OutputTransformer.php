@@ -189,7 +189,10 @@ final class OutputTransformer implements OutputTransformerInterface
             return [];
         }
 
-        return [self::KEY_WIND_DIRECTION => WindDirection::fromDegrees($degrees)->value];
+        return [
+            self::KEY_WIND_DIRECTION => WindDirection::fromDegrees($degrees)->value,
+            self::KEY_WIND_DIRECTION_DEGREES => $degrees,
+        ];
     }
 
     /**

@@ -52,6 +52,7 @@ final class OutputTransformerTest extends TestCase
             OutputTransformerInterface::KEY_WIND_SPEED => 10.0 * OutputTransformerInterface::METRES_PER_SECOND_TO_MPH,
             OutputTransformerInterface::KEY_WIND_GUST => 12.0 * OutputTransformerInterface::METRES_PER_SECOND_TO_MPH,
             OutputTransformerInterface::KEY_WIND_DIRECTION => WindDirection::fromDegrees(90)->value,
+            OutputTransformerInterface::KEY_WIND_DIRECTION_DEGREES => 90,
             OutputTransformerInterface::KEY_TYPE => WeatherType::SUNNY_DAY->value,
             OutputTransformerInterface::KEY_TYPE_STRING => 'Sunny day',
             OutputTransformerInterface::KEY_TYPE_EMOJI => '☀️',
