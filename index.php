@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 date_default_timezone_set('UTC');
 
-use ChristianBrown\CloudFunction\CloudFunction;
-use ChristianBrown\CloudFunction\FunctionConfigTransformer;
-use ChristianBrown\GetMetOfficeTemps\ConfigTransformer;
-use ChristianBrown\GetMetOfficeTemps\DataProvider;
-use ChristianBrown\GetMetOfficeTemps\ForecastTransformer;
-use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApi;
-use ChristianBrown\MetOffice\DataPoint\Forecast\Transformer\WeatherTypeTransformer;
+use ChristianBrown\GcpFunction\CloudFunction;
+use ChristianBrown\GcpFunction\FunctionConfigTransformer;
+use ChristianBrown\MetOffice\MetOffice;
+use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformer;
+use ChristianBrown\MetOfficeWeather\ConfigTransformer;
+use ChristianBrown\MetOfficeWeather\DataProvider;
+use ChristianBrown\MetOfficeWeather\OutputTransformer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -21,11 +21,12 @@ function run(ServerRequestInterface $request): ResponseInterface
     $configTransformer = new ConfigTransformer($functionConfigTransformer);
     $config = $configTransformer->transform($env);
 
-    $weatherTypeTransformer = new WeatherTypeTransformer();
-    $forecastTransformer = new ForecastTransformer($weatherTypeTransformer);
-    $threeHourlyForecastApi = new ThreeHourlySiteForecastApi($config->getApiKey());
+    $metOffice = new MetOffice($config->getApiKey());
+    $hourlyApi = $metOffice->getHourlyForecastApi();
 
-    $dataProvider = new DataProvider($config, $forecastTransformer, $threeHourlyForecastApi);
+    $outputTransformer = new OutputTransformer(new WeatherTypeTransformer());
+
+    $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $config->getLatitude(), $config->getLongitude());
     $cloudFunction = new CloudFunction($dataProvider, $config->getFunctionConfig());
     $response = $cloudFunction->run($request);
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ChristianBrown\GetMetOfficeTemps;
+namespace ChristianBrown\MetOfficeWeather;
 
-use ChristianBrown\CloudFunction\FunctionConfigInterface;
+use ChristianBrown\GcpFunction\FunctionConfigInterface;
 
 interface ConfigInterface
 {
@@ -12,5 +12,7 @@ interface ConfigInterface
 
     public function getFunctionConfig(): FunctionConfigInterface;
 
-    public function getSiteId(): int;
+    public function getLatitude(): float;
+
+    public function getLongitude(): float;
 }

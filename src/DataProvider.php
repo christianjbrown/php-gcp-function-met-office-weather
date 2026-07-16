@@ -2,29 +2,94 @@
 
 declare(strict_types=1);
 
-namespace ChristianBrown\GetMetOfficeTemps;
+namespace ChristianBrown\MetOfficeWeather;
 
-use ChristianBrown\MetOffice\DataPoint\Forecast\ThreeHourlySiteForecastApiInterface;
+use ChristianBrown\MetOffice\Api\HourlyForecastApiInterface;
+use ChristianBrown\MetOffice\Model\ForecastTimeStepInterface;
+use ChristianBrown\MetOffice\Model\HourlyForecastTimeStepInterface;
+use ChristianBrown\UserFriendlyException\UserFriendlyException;
 use Psr\Http\Message\ServerRequestInterface;
+
+use function array_filter;
+use function array_key_last;
+use function array_values;
+use function time;
+use function usort;
 
 final class DataProvider implements DataProviderInterface
 {
-    private ConfigInterface $config;
-    private ForecastTransformerInterface $forecastTransformer;
-    private ThreeHourlySiteForecastApiInterface $threeHourlySiteForecastApi;
+    private HourlyForecastApiInterface $hourlyForecastApi;
+    private float $latitude;
+    private float $longitude;
+    private int $now;
+    private OutputTransformerInterface $outputTransformer;
 
-    public function __construct(ConfigInterface $config, ForecastTransformerInterface $forecastTransformer, ThreeHourlySiteForecastApiInterface $threeHourlyForecastApi)
+    public function __construct(HourlyForecastApiInterface $hourlyForecastApi, OutputTransformerInterface $outputTransformer, float $latitude, float $longitude)
     {
-        $this->config = $config;
-        $this->forecastTransformer = $forecastTransformer;
-        $this->threeHourlySiteForecastApi = $threeHourlyForecastApi;
+        $this->hourlyForecastApi = $hourlyForecastApi;
+        $this->outputTransformer = $outputTransformer;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->now = time();
     }
 
     public function getData(ServerRequestInterface $request): array
     {
-        $forecast = $this->threeHourlySiteForecastApi->getOnePeriod($this->config->getSiteId());
-        $data = $this->forecastTransformer->transform($forecast);
+        $forecast = $this->hourlyForecastApi->getForecast($this->latitude, $this->longitude);
+        $timeSteps = $forecast->getTimeSteps();
 
-        return $data;
+        // Split into sequential guards so each failure path is independently
+        // reachable for path coverage.
+        if ([] === $timeSteps) {
+            throw new UserFriendlyException(self::ERROR_NO_FORECAST);
+        }
+
+        $step = $this->selectCurrentStep($timeSteps);
+        if (!$step instanceof HourlyForecastTimeStepInterface) {
+            throw new UserFriendlyException(self::ERROR_NO_FORECAST);
+        }
+
+        return $this->outputTransformer->transform($step);
+    }
+
+    /**
+     * Selects the step whose time is the greatest that is still at or before now
+     * (the "current" hour); when every step is in the future, falls back to the
+     * earliest step.
+     *
+     * @param ForecastTimeStepInterface[] $timeSteps
+     */
+    private function selectCurrentStep(array $timeSteps): ForecastTimeStepInterface
+    {
+        $sorted = $this->sortByTime($timeSteps);
+
+        $past = array_values(
+            array_filter(
+                $sorted,
+                fn (ForecastTimeStepInterface $step): bool => $step->getTime() <= $this->now
+            )
+        );
+
+        if ([] === $past) {
+            return $sorted[0];
+        }
+
+        return $past[array_key_last($past)];
+    }
+
+    /**
+     * @param ForecastTimeStepInterface[] $timeSteps
+     *
+     * @return ForecastTimeStepInterface[]
+     */
+    private function sortByTime(array $timeSteps): array
+    {
+        $sorted = array_values($timeSteps);
+        usort(
+            $sorted,
+            static fn (ForecastTimeStepInterface $a, ForecastTimeStepInterface $b): int => $a->getTime() <=> $b->getTime()
+        );
+
+        return $sorted;
     }
 }
