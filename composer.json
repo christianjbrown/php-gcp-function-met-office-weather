@@ -20,7 +20,7 @@
     "require": {
         "php": "^8.5",
         "christianjbrown/php-gcp-function-lib": "dev-main",
-        "christianjbrown/php-met-office-api-lib": "dev-main",
+        "christianjbrown/php-met-office-weather-datahub-api-lib": "dev-main",
         "christianjbrown/php-user-friendly-exception-lib": "dev-main",
         "google/cloud-functions-framework": "^1.1",
         "psr/http-client": "^1.0"
@@ -77,7 +77,7 @@
         },
         {
             "type": "github",
-            "url": "git@github.com:christianjbrown/php-met-office-api-lib.git"
+            "url": "git@github.com:christianjbrown/php-met-office-weather-datahub-api-lib.git"
         },
         {
             "type": "github",
