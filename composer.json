@@ -73,6 +73,14 @@
     "repositories": [
         {
             "type": "github",
+            "url": "git@github.com:christianjbrown/php-api-client-lib.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-code-quality-scripts.git"
+        },
+        {
+            "type": "github",
             "url": "git@github.com:christianjbrown/php-gcp-function-lib.git"
         },
         {
@@ -82,14 +90,6 @@
         {
             "type": "github",
             "url": "git@github.com:christianjbrown/php-user-friendly-exception-lib.git"
-        },
-        {
-            "type": "github",
-            "url": "git@github.com:christianjbrown/php-api-client-lib.git"
-        },
-        {
-            "type": "github",
-            "url": "git@github.com:christianjbrown/php-code-quality-scripts.git"
         }
     ],
     "minimum-stability": "dev"
