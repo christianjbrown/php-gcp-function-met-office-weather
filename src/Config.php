@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace ChristianBrown\GetMetOfficeTemps;
+namespace ChristianBrown\MetOfficeWeather;
 
-use ChristianBrown\CloudFunction\FunctionConfigInterface;
+use ChristianBrown\GcpFunction\FunctionConfigInterface;
 
 final class Config implements ConfigInterface
 {
     private string $apiKey;
     private FunctionConfigInterface $functionConfig;
-    private int $siteId;
+    private float $latitude;
+    private float $longitude;
 
-    public function __construct(FunctionConfigInterface $functionConfig, int $siteId, string $apiKey)
+    public function __construct(FunctionConfigInterface $functionConfig, string $apiKey, float $latitude, float $longitude)
     {
         $this->functionConfig = $functionConfig;
-        $this->siteId = $siteId;
         $this->apiKey = $apiKey;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
     }
 
     public function getApiKey(): string
@@ -29,8 +31,13 @@ final class Config implements ConfigInterface
         return $this->functionConfig;
     }
 
-    public function getSiteId(): int
+    public function getLatitude(): float
     {
-        return $this->siteId;
+        return $this->latitude;
+    }
+
+    public function getLongitude(): float
+    {
+        return $this->longitude;
     }
 }
