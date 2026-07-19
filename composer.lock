@@ -171,12 +171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib.git",
-                "reference": "232fb095a29451fa2fe64604741c8648101514be"
+                "reference": "ab5fcc3d3df2c361f3c0f301ee45f44fe75a6e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-met-office-weather-datahub-api-lib/zipball/232fb095a29451fa2fe64604741c8648101514be",
-                "reference": "232fb095a29451fa2fe64604741c8648101514be",
+                "url": "https://api.github.com/repos/christianjbrown/php-met-office-weather-datahub-api-lib/zipball/ab5fcc3d3df2c361f3c0f301ee45f44fe75a6e0e",
+                "reference": "ab5fcc3d3df2c361f3c0f301ee45f44fe75a6e0e",
                 "shasum": ""
             },
             "require": {
@@ -241,7 +241,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib/tree/main"
             },
-            "time": "2026-07-19T14:06:17+00:00"
+            "time": "2026-07-19T23:38:21+00:00"
         },
         {
             "name": "christianjbrown/php-user-friendly-exception-lib",
