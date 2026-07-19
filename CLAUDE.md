@@ -53,10 +53,22 @@ Everything lives directly under `src/` (no sub-layers). PSR-4: `ChristianBrown\M
 top-level `index.php` holds the framework entry point and is intentionally outside the namespace.
 
 - **`index.php`** — defines `run(ServerRequestInterface): ResponseInterface`, the Functions Framework
-  target. It reads `getenv()`, builds a `Config` via `ConfigTransformer`, constructs the `MetOffice`
-  facade and pulls its hourly forecast client, assembles the `DataProvider` and `OutputTransformer`
-  (injecting the library's `WeatherTypeTransformer`), and hands both to a `CloudFunction`, returning
-  its `run()` response. It sets `date_default_timezone_set('UTC')` at the top.
+  target, and sets `date_default_timezone_set('UTC')` at the top. It is a thin **composition root
+  only**: it reads `getenv()`, builds a `Config` via `ConfigTransformer`, then constructs an anonymous
+  `CloudFunctionFactoryInterface` whose `create()` holds the wiring (the `MetOffice` facade + its hourly
+  forecast client, the `DataProvider` and `OutputTransformer` injecting the library's
+  `WeatherTypeTransformer`, handed to a `CloudFunction`). It passes that factory + the `FunctionConfig`
+  to a `RequestHandler` and returns `handle($request)`. All the `new` wiring lives here (outside the
+  namespace, so it is excluded from coverage/PHPStan/phpcs, which only scan `src`/`tests`); the testable
+  orchestration lives in `src`.
+- **`RequestHandler`** / **`RequestHandlerInterface`** — the testable entry-point orchestration.
+  `handle()` calls the injected `CloudFunctionFactoryInterface::create()` and returns
+  `CloudFunction::run($request)`, wrapping **both** in one `try/catch (Throwable)`. Because the MetOffice
+  client is built in the factory *before* the `CloudFunction` exists, a failure there would otherwise
+  escape as a bare 500; the catch instead `error_log()`s the cause and returns the framework's
+  `JsonErrorResponse` envelope (matching the sibling `php-gcp-function-smartthings-climate` app).
+- **`CloudFunctionFactoryInterface`** — the seam that defers the wiring so `RequestHandler` can wrap it;
+  implemented as an anonymous class in `index.php` (the composition root) and mocked in tests.
 - **`Config`** / **`ConfigInterface`** — a small holder for the API key, latitude, longitude, plus the
   `FunctionConfigInterface` (from `php-gcp-function-lib`) that drives gating/caching.
 - **`ConfigTransformer`** / **`ConfigTransformerInterface`** — builds a `Config` from the environment
