@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c22042ea4987cc8e05fd1900e215969f",
+    "content-hash": "227eaa919d9889aad9a10eb6225f87f7",
     "packages": [
         {
             "name": "christianjbrown/php-api-client-lib",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-api-client-lib.git",
-                "reference": "8ef6a6f642a4c7f31cf66d0bd480227da8c96c03"
+                "reference": "5ad4374090a34614a76a6fe170266c7736b49263"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-api-client-lib/zipball/8ef6a6f642a4c7f31cf66d0bd480227da8c96c03",
-                "reference": "8ef6a6f642a4c7f31cf66d0bd480227da8c96c03",
+                "url": "https://api.github.com/repos/christianjbrown/php-api-client-lib/zipball/5ad4374090a34614a76a6fe170266c7736b49263",
+                "reference": "5ad4374090a34614a76a6fe170266c7736b49263",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-api-client-lib/tree/main"
             },
-            "time": "2026-07-16T01:20:55+00:00"
+            "time": "2026-07-19T15:41:44+00:00"
         },
         {
             "name": "christianjbrown/php-gcp-function-lib",
@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-gcp-function-lib.git",
-                "reference": "2a4334e1c370fccb7f9ee18fa7894993977a5476"
+                "reference": "4a8469f537070b949abc6e1c2107ab27723b95f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-gcp-function-lib/zipball/2a4334e1c370fccb7f9ee18fa7894993977a5476",
-                "reference": "2a4334e1c370fccb7f9ee18fa7894993977a5476",
+                "url": "https://api.github.com/repos/christianjbrown/php-gcp-function-lib/zipball/4a8469f537070b949abc6e1c2107ab27723b95f0",
+                "reference": "4a8469f537070b949abc6e1c2107ab27723b95f0",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-gcp-function-lib/tree/main"
             },
-            "time": "2026-07-16T01:20:59+00:00"
+            "time": "2026-07-19T14:05:59+00:00"
         },
         {
             "name": "christianjbrown/php-met-office-weather-datahub-api-lib",
@@ -171,12 +171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib.git",
-                "reference": "3eaf530bcd09825718a323fcd793943b368ad831"
+                "reference": "232fb095a29451fa2fe64604741c8648101514be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-met-office-weather-datahub-api-lib/zipball/3eaf530bcd09825718a323fcd793943b368ad831",
-                "reference": "3eaf530bcd09825718a323fcd793943b368ad831",
+                "url": "https://api.github.com/repos/christianjbrown/php-met-office-weather-datahub-api-lib/zipball/232fb095a29451fa2fe64604741c8648101514be",
+                "reference": "232fb095a29451fa2fe64604741c8648101514be",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
                     "name": "Christian Brown"
                 }
             ],
-            "description": "A strongly-typed PHP client for the Met Office Weather DataHub APIs (currently the Site-Specific / Global Spot forecast and Observation (Land)), returning typed models instead of raw GeoJSON.",
+            "description": "A strongly-typed PHP client for the Met Office Weather DataHub APIs (currently the Site-Specific / Global Spot forecast, Observation (Land), Atmospheric Models, and Map Images), returning typed models instead of raw GeoJSON.",
             "keywords": [
                 "api",
                 "client",
@@ -241,7 +241,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib/tree/main"
             },
-            "time": "2026-07-16T15:18:59+00:00"
+            "time": "2026-07-19T14:06:17+00:00"
         },
         {
             "name": "christianjbrown/php-user-friendly-exception-lib",
@@ -249,12 +249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-user-friendly-exception-lib.git",
-                "reference": "9c360a27286c2adcb4e41230bada125a15160388"
+                "reference": "f5691f49316cd8f05c68563b92a8f886871f9abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-user-friendly-exception-lib/zipball/9c360a27286c2adcb4e41230bada125a15160388",
-                "reference": "9c360a27286c2adcb4e41230bada125a15160388",
+                "url": "https://api.github.com/repos/christianjbrown/php-user-friendly-exception-lib/zipball/f5691f49316cd8f05c68563b92a8f886871f9abc",
+                "reference": "f5691f49316cd8f05c68563b92a8f886871f9abc",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-user-friendly-exception-lib/tree/main"
             },
-            "time": "2026-07-16T01:20:52+00:00"
+            "time": "2026-07-19T14:05:55+00:00"
         },
         {
             "name": "cloudevents/sdk-php",
@@ -1525,12 +1525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-code-quality-scripts.git",
-                "reference": "926dc50adc9697f1c972b25c7aa75ae56e9d54d9"
+                "reference": "27c07ca5080a4565d68b11c5f4430f9f38ac9e8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-code-quality-scripts/zipball/926dc50adc9697f1c972b25c7aa75ae56e9d54d9",
-                "reference": "926dc50adc9697f1c972b25c7aa75ae56e9d54d9",
+                "url": "https://api.github.com/repos/christianjbrown/php-code-quality-scripts/zipball/27c07ca5080a4565d68b11c5f4430f9f38ac9e8e",
+                "reference": "27c07ca5080a4565d68b11c5f4430f9f38ac9e8e",
                 "shasum": ""
             },
             "require": {
@@ -1607,7 +1607,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-code-quality-scripts/tree/main"
             },
-            "time": "2026-07-16T01:20:53+00:00"
+            "time": "2026-07-19T14:05:41+00:00"
         },
         {
             "name": "clue/ndjson-react",
