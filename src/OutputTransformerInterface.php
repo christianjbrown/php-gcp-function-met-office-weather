@@ -5,7 +5,39 @@ declare(strict_types=1);
 namespace ChristianBrown\MetOfficeWeather;
 
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(
+    schema: 'WeatherData',
+    description: 'The current-hour weather. The valid-window fields are always present; every other field appears only when its source value is available.',
+    required: [
+        self::KEY_VALID_FROM,
+        self::KEY_VALID_FROM_ISO8601,
+        self::KEY_VALID_TO,
+        self::KEY_VALID_TO_ISO8601,
+    ],
+    properties: [
+        new OA\Property(property: self::KEY_VALID_FROM, description: 'Start of the forecast window (Unix seconds).', type: 'integer'),
+        new OA\Property(property: self::KEY_VALID_FROM_ISO8601, type: 'string', format: 'date-time'),
+        new OA\Property(property: self::KEY_VALID_TO, description: 'End of the forecast window (Unix seconds).', type: 'integer'),
+        new OA\Property(property: self::KEY_VALID_TO_ISO8601, type: 'string', format: 'date-time'),
+        new OA\Property(property: self::KEY_TEMPERATURE, description: 'Screen air temperature (degrees Celsius).', type: 'number'),
+        new OA\Property(property: self::KEY_TEMPERATURE_FEELS_LIKE, description: 'Feels-like temperature (degrees Celsius).', type: 'number'),
+        new OA\Property(property: self::KEY_HUMIDITY, description: 'Screen relative humidity (percent).', type: 'number'),
+        new OA\Property(property: self::KEY_PRECIPITATION, description: 'Probability of precipitation (percent).', type: 'integer'),
+        new OA\Property(property: self::KEY_UV_INDEX, description: 'UV index.', type: 'integer'),
+        new OA\Property(property: self::KEY_VISIBILITY, description: 'Visibility (metres).', type: 'integer'),
+        new OA\Property(property: self::KEY_WIND_SPEED, description: '10m wind speed (mph).', type: 'number'),
+        new OA\Property(property: self::KEY_WIND_GUST, description: 'Maximum 10m wind gust (mph).', type: 'number'),
+        new OA\Property(property: self::KEY_WIND_DIRECTION, description: '10m wind direction as a compass point.', type: 'string'),
+        new OA\Property(property: self::KEY_WIND_DIRECTION_DEGREES, description: '10m wind direction (degrees).', type: 'integer'),
+        new OA\Property(property: self::KEY_TYPE, description: 'Met Office significant weather code.', type: 'integer'),
+        new OA\Property(property: self::KEY_TYPE_STRING, description: 'Human-readable weather description.', type: 'string'),
+        new OA\Property(property: self::KEY_TYPE_EMOJI, description: 'Weather emoji.', type: 'string'),
+    ],
+    type: 'object',
+    additionalProperties: false,
+)]
 interface OutputTransformerInterface
 {
     public const string KEY_HUMIDITY = 'humidity';

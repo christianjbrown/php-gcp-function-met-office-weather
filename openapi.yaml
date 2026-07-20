@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: 'Met Office Weather Cloud Function'
+  description: 'Reads the current outdoor weather for a fixed latitude/longitude from the Met Office Weather DataHub Site-Specific hourly forecast API and returns it as a single JSON envelope.'
+  version: 1.0.0
+paths:
+  /:
+    get:
+      summary: 'Get the current weather for the configured location.'
+      description: "Returns the current-hour weather for the function's configured location."
+      operationId: getCurrentWeather
+      responses:
+        '200':
+          description: 'The current-hour weather for the configured location.'
+          headers:
+            Access-Control-Allow-Methods:
+              description: 'Allowed CORS methods.'
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: 'Configured allowed origin (present when a required origin is configured).'
+              schema:
+                type: string
+            Cache-Control:
+              description: 'CDN/browser cache directives (present when cache TTLs are configured).'
+              schema:
+                type: string
+            Surrogate-Control:
+              description: 'Surrogate cache directives (present when cache TTLs are configured).'
+              schema:
+                type: string
+            Vary:
+              description: 'Vary list (present when a required origin is configured).'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                required:
+                  - success
+                  - timestamp_unix
+                  - timestamp_iso8601
+                  - version
+                  - data
+                properties:
+                  success: { type: boolean }
+                  timestamp_unix: { type: integer }
+                  timestamp_iso8601: { type: string, format: date-time }
+                  version: { type: string }
+                  data: { $ref: '#/components/schemas/WeatherData' }
+                type: object
+                additionalProperties: false
+        '401':
+          description: 'The request failed header authorization.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '500':
+          description: 'No forecast was available, or an unhandled error occurred.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+      servers:
+        -
+          url: /
+components:
+  schemas:
+    WeatherData:
+      description: 'The current-hour weather. The valid-window fields are always present; every other field appears only when its source value is available.'
+      required:
+        - valid_from
+        - valid_from_iso8601
+        - valid_to
+        - valid_to_iso8601
+      properties:
+        valid_from:
+          description: 'Start of the forecast window (Unix seconds).'
+          type: integer
+        valid_from_iso8601:
+          type: string
+          format: date-time
+        valid_to:
+          description: 'End of the forecast window (Unix seconds).'
+          type: integer
+        valid_to_iso8601:
+          type: string
+          format: date-time
+        temp:
+          description: 'Screen air temperature (degrees Celsius).'
+          type: number
+        temp_feels_like:
+          description: 'Feels-like temperature (degrees Celsius).'
+          type: number
+        humidity:
+          description: 'Screen relative humidity (percent).'
+          type: number
+        precipitation:
+          description: 'Probability of precipitation (percent).'
+          type: integer
+        uv_index:
+          description: 'UV index.'
+          type: integer
+        visibility:
+          description: 'Visibility (metres).'
+          type: integer
+        wind_speed:
+          description: '10m wind speed (mph).'
+          type: number
+        wind_gust:
+          description: 'Maximum 10m wind gust (mph).'
+          type: number
+        wind_direction:
+          description: '10m wind direction as a compass point.'
+          type: string
+        wind_direction_degrees:
+          description: '10m wind direction (degrees).'
+          type: integer
+        type:
+          description: 'Met Office significant weather code.'
+          type: integer
+        type_string:
+          description: 'Human-readable weather description.'
+          type: string
+        type_emoji:
+          description: 'Weather emoji.'
+          type: string
+      type: object
+      additionalProperties: false
+    ErrorEnvelope:
+      description: 'The JSON error envelope returned for a failed request (an authorization failure, a missing forecast, or an unhandled error).'
+      required:
+        - success
+        - timestamp_unix
+        - timestamp_iso8601
+        - version
+        - error
+      properties:
+        success:
+          type: boolean
+        timestamp_unix:
+          type: integer
+        timestamp_iso8601:
+          type: string
+          format: date-time
+        version:
+          type: string
+        error:
+          type: string
+      type: object
+      additionalProperties: false
