@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather\Tests;
 
+use ChristianBrown\MetOffice\Coordinates;
 use ChristianBrown\MetOffice\SiteSpecific\Api\HourlyForecastApiInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastTimeStepInterface;
@@ -46,7 +47,7 @@ final class DataProviderTest extends TestCase
             ->with($earliest)
             ->willReturn(['test-output']);
 
-        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, 51.5, -0.18);
+        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, new Coordinates(51.5, -0.18));
 
         self::assertSame(['test-output'], $dataProvider->getData($request));
     }
@@ -69,7 +70,7 @@ final class DataProviderTest extends TestCase
         $hourlyForecastApi = self::createMock(HourlyForecastApiInterface::class);
         $hourlyForecastApi->expects(self::once())
             ->method('getForecast')
-            ->with(51.5, -0.18)
+            ->with(new Coordinates(51.5, -0.18))
             ->willReturn($forecast);
 
         $outputTransformer = self::createMock(OutputTransformerInterface::class);
@@ -78,7 +79,7 @@ final class DataProviderTest extends TestCase
             ->with($currentPast)
             ->willReturn(['test-output']);
 
-        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, 51.5, -0.18);
+        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, new Coordinates(51.5, -0.18));
 
         self::assertSame(['test-output'], $dataProvider->getData($request));
     }
@@ -98,7 +99,7 @@ final class DataProviderTest extends TestCase
 
         $outputTransformer = self::createStub(OutputTransformerInterface::class);
 
-        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, 51.5, -0.18);
+        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, new Coordinates(51.5, -0.18));
 
         $this->expectException(UserFriendlyException::class);
         $this->expectExceptionMessage(DataProviderInterface::ERROR_NO_FORECAST);
@@ -126,7 +127,7 @@ final class DataProviderTest extends TestCase
 
         $outputTransformer = self::createStub(OutputTransformerInterface::class);
 
-        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, 51.5, -0.18);
+        $dataProvider = new DataProvider($hourlyForecastApi, $outputTransformer, new Coordinates(51.5, -0.18));
 
         $this->expectException(UserFriendlyException::class);
         $this->expectExceptionMessage(DataProviderInterface::ERROR_NO_FORECAST);
