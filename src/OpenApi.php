@@ -13,10 +13,13 @@ use OpenApi\Attributes as OA;
  * This class carries no runtime behaviour and is never instantiated: it exists
  * only so `zircote/swagger-php` can scan its `#[OA\...]` attributes and emit the
  * committed `openapi.yaml`. Keeping the top-level `#[OA\Info]`/`#[OA\Server]` and
- * the `#[OA\Get]` operation here (with the response envelopes referencing the
- * `WeatherData` / `ErrorEnvelope` schemas that live next to their types) means the
- * HTTP contract is generated from the same typed code that produces the responses,
- * so it cannot silently drift. It has no executable lines and is excluded from
+ * the `#[OA\Get]` operation here means the HTTP contract is generated from the same
+ * typed code that produces the responses, so it cannot silently drift. The success
+ * response composes the shared `SuccessEnvelope` component (from `php-gcp-function-lib`)
+ * with this function's local `WeatherData` schema via `allOf` — re-narrowing only the
+ * envelope's generic `data` placeholder — and the error responses reference the shared
+ * `ErrorEnvelope` component directly, so the reusable envelope is declared once in the
+ * library rather than inline here. It has no executable lines and is excluded from
  * coverage in `phpunit.xml`, like a config file.
  */
 #[OA\Info(
@@ -42,22 +45,14 @@ use OpenApi\Attributes as OA;
                 new OA\Header(header: ResponseInterface::HEADER_KEY_VARY, description: 'Vary list (present when a required origin is configured).', schema: new OA\Schema(type: 'string')),
             ],
             content: new OA\JsonContent(
-                required: [
-                    ResponseInterface::RESPONSE_API_KEY_SUCCESS,
-                    ResponseInterface::RESPONSE_API_KEY_TIMESTAMP_UNIX,
-                    ResponseInterface::RESPONSE_API_KEY_TIMESTAMP_ISO8601,
-                    ResponseInterface::RESPONSE_API_KEY_VERSION,
-                    ResponseInterface::RESPONSE_API_KEY_DATA,
+                allOf: [
+                    new OA\Schema(ref: '#/components/schemas/SuccessEnvelope'),
+                    new OA\Schema(
+                        properties: [
+                            new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_DATA, ref: '#/components/schemas/WeatherData'),
+                        ],
+                    ),
                 ],
-                properties: [
-                    new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_SUCCESS, type: 'boolean'),
-                    new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_TIMESTAMP_UNIX, type: 'integer'),
-                    new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_TIMESTAMP_ISO8601, type: 'string', format: 'date-time'),
-                    new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_VERSION, type: 'string'),
-                    new OA\Property(property: ResponseInterface::RESPONSE_API_KEY_DATA, ref: '#/components/schemas/WeatherData'),
-                ],
-                type: 'object',
-                additionalProperties: false,
             ),
         ),
         new OA\Response(
