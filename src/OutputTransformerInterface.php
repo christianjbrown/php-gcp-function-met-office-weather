@@ -34,8 +34,7 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::KEY_WIND_DIRECTION, description: '10m wind direction as a compass point.', type: 'string', enum: WindDirection::class),
         new OA\Property(property: self::KEY_WIND_DIRECTION_DEGREES, description: '10m wind direction (degrees).', type: 'integer'),
         new OA\Property(property: self::KEY_TYPE, description: 'Met Office significant weather code.', type: 'integer', enum: WeatherType::class),
-        new OA\Property(property: self::KEY_TYPE_STRING, description: 'Human-readable weather description.', type: 'string'),
-        new OA\Property(property: self::KEY_TYPE_EMOJI, description: 'Weather emoji.', type: 'string'),
+        new OA\Property(property: self::KEY_TYPE_NAME, description: 'Met Office weather type as a stable enum-name token (e.g. "HEAVY_RAIN"); the consumer maps it to a display name and emoji.', type: 'string'),
     ],
     type: 'object',
     additionalProperties: false,
@@ -47,8 +46,7 @@ interface OutputTransformerInterface
     public const string KEY_TEMPERATURE = 'temp';
     public const string KEY_TEMPERATURE_FEELS_LIKE = 'temp_feels_like';
     public const string KEY_TYPE = 'type';
-    public const string KEY_TYPE_EMOJI = 'type_emoji';
-    public const string KEY_TYPE_STRING = 'type_string';
+    public const string KEY_TYPE_NAME = 'type_name';
     public const string KEY_UV_INDEX = 'uv_index';
     public const string KEY_VALID_FROM = 'valid_from';
     public const string KEY_VALID_FROM_ISO8601 = 'valid_from_iso8601';

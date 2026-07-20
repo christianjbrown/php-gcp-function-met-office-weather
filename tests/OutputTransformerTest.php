@@ -7,7 +7,6 @@ namespace ChristianBrown\MetOfficeWeather\Tests;
 use ChristianBrown\MetOffice\Enums\WeatherType;
 use ChristianBrown\MetOffice\Enums\WindDirection;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
-use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformerInterface;
 use ChristianBrown\MetOfficeWeather\OutputTransformer;
 use ChristianBrown\MetOfficeWeather\OutputTransformerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -30,13 +29,7 @@ final class OutputTransformerTest extends TestCase
     {
         $step = $this->createStep(self::TIME, 18.7, 17.2, 65.5, 20, 3, 30000, 10.0, 12.0, 90, WeatherType::SUNNY_DAY);
 
-        $weatherTypeTransformer = self::createStub(WeatherTypeTransformerInterface::class);
-        $weatherTypeTransformer->method('transform')
-            ->willReturn('Sunny day');
-        $weatherTypeTransformer->method('transformToEmoji')
-            ->willReturn('☀️');
-
-        $transformer = new OutputTransformer($weatherTypeTransformer);
+        $transformer = new OutputTransformer();
 
         $expected = [
             OutputTransformerInterface::KEY_VALID_FROM => self::TIME,
@@ -54,8 +47,7 @@ final class OutputTransformerTest extends TestCase
             OutputTransformerInterface::KEY_WIND_DIRECTION => WindDirection::fromDegrees(90)->value,
             OutputTransformerInterface::KEY_WIND_DIRECTION_DEGREES => 90,
             OutputTransformerInterface::KEY_TYPE => WeatherType::SUNNY_DAY->value,
-            OutputTransformerInterface::KEY_TYPE_STRING => 'Sunny day',
-            OutputTransformerInterface::KEY_TYPE_EMOJI => '☀️',
+            OutputTransformerInterface::KEY_TYPE_NAME => WeatherType::SUNNY_DAY->name,
         ];
 
         self::assertSame($expected, $transformer->transform($step));
@@ -68,9 +60,7 @@ final class OutputTransformerTest extends TestCase
     {
         $step = $this->createStep(self::TIME, null, null, null, null, null, null, null, null, null, null);
 
-        $weatherTypeTransformer = self::createStub(WeatherTypeTransformerInterface::class);
-
-        $transformer = new OutputTransformer($weatherTypeTransformer);
+        $transformer = new OutputTransformer();
 
         $expected = [
             OutputTransformerInterface::KEY_VALID_FROM => self::TIME,
@@ -83,19 +73,17 @@ final class OutputTransformerTest extends TestCase
     }
 
     /**
+     * The function no longer decides display wording, so it emits the enum-name
+     * token for every code — including NOT_USED, which had no display mapping
+     * under the old transformer. The consumer decides whether to render it.
+     *
      * @throws Exception
      */
-    public function testWeatherTypeWithoutNameOrEmoji(): void
+    public function testWeatherTypeEmitsNameTokenEvenForDisplaylessCode(): void
     {
         $step = $this->createStep(self::TIME, null, null, null, null, null, null, null, null, null, WeatherType::NOT_USED);
 
-        $weatherTypeTransformer = self::createStub(WeatherTypeTransformerInterface::class);
-        $weatherTypeTransformer->method('transform')
-            ->willReturn(null);
-        $weatherTypeTransformer->method('transformToEmoji')
-            ->willReturn(null);
-
-        $transformer = new OutputTransformer($weatherTypeTransformer);
+        $transformer = new OutputTransformer();
 
         $expected = [
             OutputTransformerInterface::KEY_VALID_FROM => self::TIME,
@@ -103,6 +91,7 @@ final class OutputTransformerTest extends TestCase
             OutputTransformerInterface::KEY_VALID_TO => self::TIME + OutputTransformerInterface::WINDOW_SECONDS,
             OutputTransformerInterface::KEY_VALID_TO_ISO8601 => gmdate(DATE_ATOM, self::TIME + OutputTransformerInterface::WINDOW_SECONDS),
             OutputTransformerInterface::KEY_TYPE => WeatherType::NOT_USED->value,
+            OutputTransformerInterface::KEY_TYPE_NAME => WeatherType::NOT_USED->name,
         ];
 
         self::assertSame($expected, $transformer->transform($step));

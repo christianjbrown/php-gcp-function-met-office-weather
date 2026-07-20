@@ -73,8 +73,7 @@ top-level `index.php` holds the framework entry point and is intentionally outsi
   target, and sets `date_default_timezone_set('UTC')` at the top. It is a thin **composition root
   only**: it reads `getenv()`, builds a `Config` via `ConfigTransformer`, then constructs an anonymous
   `CloudFunctionFactoryInterface` whose `create()` holds the wiring (the `MetOffice` facade + its hourly
-  forecast client, the `DataProvider` and `OutputTransformer` injecting the library's
-  `WeatherTypeTransformer`, handed to a `CloudFunction`). It passes that factory + the `FunctionConfig`
+  forecast client, the `DataProvider` and `OutputTransformer`, handed to a `CloudFunction`). It passes that factory + the `FunctionConfig`
   to a `RequestHandler` and returns `handle($request)`. All the `new` wiring lives here (outside the
   namespace, so it is excluded from coverage/PHPStan/phpcs, which only scan `src`/`tests`); the testable
   orchestration lives in `src`.
@@ -103,19 +102,22 @@ top-level `index.php` holds the framework entry point and is intentionally outsi
 - **`OutputTransformer`** / **`OutputTransformerInterface`** — shapes one `HourlyForecastTimeStep`
   into the response array. The `valid_from` / `valid_from_iso8601` / `valid_to` / `valid_to_iso8601`
   window fields are always emitted; every other field (temp, feels-like, humidity, precipitation,
-  UV, visibility, wind speed/gust/direction, weather type/string/emoji) is unioned via its own
+  UV, visibility, wind speed/gust/direction, weather `type`/`type_name`) is unioned via its own
   self-contained private helper so its presence is an independent path. Wind speeds are converted
   m/s → mph via `METRES_PER_SECOND_TO_MPH` at full precision (the website rounds for display); the
-  window length is `WINDOW_SECONDS` (3600). The weather-code name/emoji come from the library's
-  `WeatherTypeTransformer` (injected as its interface).
+  window length is `WINDOW_SECONDS` (3600). Weather type is emitted as the raw code (`type`, from
+  `WeatherType->value`) and a stable enum-name token (`type_name`, from `WeatherType->name`) — display
+  wording (name/emoji) is **not** produced here; the consuming website owns that (locale-sensitive)
+  mapping.
 
 ## Output contract
 
 The JSON keys are `KEY_*` constants on `OutputTransformerInterface`. `valid_from`,
 `valid_from_iso8601`, `valid_to`, `valid_to_iso8601` are always present. `temp`, `temp_feels_like`,
 `humidity`, `precipitation`, `uv_index`, `visibility`, `wind_speed`, `wind_gust`, `wind_direction`,
-`type`, `type_string`, and `type_emoji` appear only when their source value is non-null (and, for
-`type_string`/`type_emoji`, only when the `WeatherTypeTransformer` maps the code to a value). This
+`type`, and `type_name` appear only when their source value is non-null. `type` is the raw Met Office
+code (int) and `type_name` is the `WeatherType` enum-name token (e.g. `"HEAVY_RAIN"`); the website
+maps `type_name` to a display name + emoji. This
 contract is load-bearing — a downstream website validates it — so do not rename keys or round the
 numeric values.
 

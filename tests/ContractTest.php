@@ -10,7 +10,6 @@ use ChristianBrown\GcpFunction\FunctionConfig;
 use ChristianBrown\GcpFunction\FunctionConfigInterface;
 use ChristianBrown\MetOffice\Enums\WeatherType;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
-use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformerInterface;
 use ChristianBrown\MetOfficeWeather\CloudFunctionFactoryInterface;
 use ChristianBrown\MetOfficeWeather\DataProviderInterface;
 use ChristianBrown\MetOfficeWeather\OutputTransformer;
@@ -71,14 +70,8 @@ final class ContractTest extends TestCase
      */
     public function testSuccessFullPayloadMatchesContract(): void
     {
-        $weatherTypeTransformer = self::createStub(WeatherTypeTransformerInterface::class);
-        $weatherTypeTransformer->method('transform')
-            ->willReturn('Sunny day');
-        $weatherTypeTransformer->method('transformToEmoji')
-            ->willReturn('☀️');
-
         $step = $this->createStep(18.7, 17.2, 65.5, 20, 3, 30000, 10.0, 12.0, 90, WeatherType::SUNNY_DAY);
-        $data = (new OutputTransformer($weatherTypeTransformer))->transform($step);
+        $data = (new OutputTransformer())->transform($step);
 
         $dataProvider = self::createStub(BaseDataProviderInterface::class);
         $dataProvider->method('getData')
@@ -96,10 +89,8 @@ final class ContractTest extends TestCase
      */
     public function testSuccessMinimalPayloadMatchesContract(): void
     {
-        $weatherTypeTransformer = self::createStub(WeatherTypeTransformerInterface::class);
-
         $step = $this->createStep(null, null, null, null, null, null, null, null, null, null);
-        $data = (new OutputTransformer($weatherTypeTransformer))->transform($step);
+        $data = (new OutputTransformer())->transform($step);
 
         $dataProvider = self::createStub(BaseDataProviderInterface::class);
         $dataProvider->method('getData')
