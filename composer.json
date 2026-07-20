@@ -19,6 +19,7 @@
     ],
     "require": {
         "php": "^8.5",
+        "christianjbrown/php-api-client-lib": "dev-main",
         "christianjbrown/php-gcp-function-lib": "dev-main",
         "christianjbrown/php-met-office-weather-datahub-api-lib": "dev-main",
         "christianjbrown/php-user-friendly-exception-lib": "dev-main",
@@ -91,6 +92,5 @@
             "type": "github",
             "url": "git@github.com:christianjbrown/php-user-friendly-exception-lib.git"
         }
-    ],
-    "minimum-stability": "dev"
+    ]
 }
