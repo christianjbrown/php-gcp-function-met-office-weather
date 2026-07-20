@@ -7,6 +7,7 @@ date_default_timezone_set('UTC');
 use ChristianBrown\GcpFunction\CloudFunction;
 use ChristianBrown\GcpFunction\CloudFunctionInterface;
 use ChristianBrown\GcpFunction\FunctionConfigTransformer;
+use ChristianBrown\MetOffice\Coordinates;
 use ChristianBrown\MetOffice\MetOffice;
 use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformer;
 use ChristianBrown\MetOfficeWeather\CloudFunctionFactoryInterface;
@@ -46,7 +47,8 @@ function run(ServerRequestInterface $request): ResponseInterface
 
             $outputTransformer = new OutputTransformer(new WeatherTypeTransformer());
 
-            $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $config->getLatitude(), $config->getLongitude());
+            $coordinates = new Coordinates($config->getLatitude(), $config->getLongitude());
+            $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $coordinates);
 
             return new CloudFunction($dataProvider, $config->getFunctionConfig());
         }

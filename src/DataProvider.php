@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather;
 
+use ChristianBrown\MetOffice\CoordinatesInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Api\HourlyForecastApiInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastTimeStepInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
@@ -18,24 +19,22 @@ use function usort;
 
 final class DataProvider implements DataProviderInterface
 {
+    private CoordinatesInterface $coordinates;
     private HourlyForecastApiInterface $hourlyForecastApi;
-    private float $latitude;
-    private float $longitude;
     private int $now;
     private OutputTransformerInterface $outputTransformer;
 
-    public function __construct(HourlyForecastApiInterface $hourlyForecastApi, OutputTransformerInterface $outputTransformer, float $latitude, float $longitude)
+    public function __construct(HourlyForecastApiInterface $hourlyForecastApi, OutputTransformerInterface $outputTransformer, CoordinatesInterface $coordinates)
     {
         $this->hourlyForecastApi = $hourlyForecastApi;
         $this->outputTransformer = $outputTransformer;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        $this->coordinates = $coordinates;
         $this->now = time();
     }
 
     public function getData(ServerRequestInterface $request): array
     {
-        $forecast = $this->hourlyForecastApi->getForecast($this->latitude, $this->longitude);
+        $forecast = $this->hourlyForecastApi->getForecast($this->coordinates);
         $timeSteps = $forecast->getTimeSteps();
 
         // Split into sequential guards so each failure path is independently
