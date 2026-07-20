@@ -1,8 +1,8 @@
-# Met Office Weather Google Cloud Function
+# Met Office Weather Google Cloud Run Function
 
 [![CI](https://github.com/christianjbrown/php-gcp-function-met-office-weather/actions/workflows/ci.yml/badge.svg)](https://github.com/christianjbrown/php-gcp-function-met-office-weather/actions/workflows/ci.yml)
 
-A small [Google Cloud Function](https://cloud.google.com/functions) (PHP) that reads the current outdoor weather for a fixed latitude/longitude from the [Met Office Weather DataHub](https://datahub.metoffice.gov.uk/) Site-Specific **hourly** forecast API and returns it as a single JSON payload.
+A small [Google Cloud Run function](https://cloud.google.com/run) (PHP) that reads the current outdoor weather for a fixed latitude/longitude from the [Met Office Weather DataHub](https://datahub.metoffice.gov.uk/) Site-Specific **hourly** forecast API and returns it as a single JSON payload.
 
 It fetches the hourly forecast for the configured location, selects the step for the *current* hour (the latest step whose time is at or before now, falling back to the earliest step when the whole series is in the future), and returns that step's temperature, feels-like temperature, humidity, precipitation probability, UV index, visibility, wind speed/gust/direction and weather type — plus the validity window of the reading.
 
@@ -39,7 +39,7 @@ Configuration is read entirely from environment variables.
 | `MET_OFFICE_WEATHER_API_KEY` | ✅ | Your Met Office Weather DataHub Site-Specific API key. |
 | `MET_OFFICE_WEATHER_LATITUDE` | ✅ | Latitude of the location to forecast (decimal degrees). |
 | `MET_OFFICE_WEATHER_LONGITUDE` | ✅ | Longitude of the location to forecast (decimal degrees). |
-| `K_REVISION` | ✅ | Set automatically by the Cloud Functions/Cloud Run runtime; only needs setting yourself when running locally. |
+| `K_REVISION` | ✅ | Set automatically by the Cloud Run runtime; only needs setting yourself when running locally. |
 | `REQUIRED_HEADER_KEY` | — | If set (with `REQUIRED_HEADER_VALUE`), requests must send this header to be served. |
 | `REQUIRED_HEADER_VALUE` | — | Expected value for `REQUIRED_HEADER_KEY`. |
 | `REQUIRED_ORIGIN` | — | Restricts responses to this CORS origin. |
@@ -143,8 +143,8 @@ npm run docs:lint      # lint openapi.yaml
 
 ## :rocket: CI & deployment
 
-- **`.github/workflows/ci.yml`** runs on pull requests to `main`: `composer install`, PHPCS, PHPStan, and PHPUnit.
-- **`.github/workflows/deploy.yml`** runs on push to `main`: deploys to Google Cloud Functions 2nd gen (`php85` runtime, `europe-west2`, function name `get-met-office-weather`) via Workload Identity Federation, grants public (`allUsers`) invoker access on the underlying Cloud Run service, smoke-tests the deployed URL, then purges the Fastly edge cache.
+- **`.github/workflows/ci.yml`** runs on pushes and pull requests to `main`: `composer install`, PHPCS, PHPStan, PHPUnit, and an OpenAPI spec-drift check.
+- **`.github/workflows/deploy.yml`** runs on push to `main`: deploys the Cloud Run function (`php85` runtime, `europe-west2`, function name `get-met-office-weather`) via Workload Identity Federation, grants public (`allUsers`) invoker access on the underlying Cloud Run service, smoke-tests the deployed URL, then purges the Fastly edge cache.
 
 The Met Office API key, latitude, longitude, and request-gating values are supplied at deploy time from Google Secret Manager (see `deploy.yml`).
 
