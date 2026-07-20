@@ -56,8 +56,7 @@ paths:
                   wind_direction: NE
                   wind_direction_degrees: 40
                   type: 1
-                  type_string: 'Sunny day'
-                  type_emoji: ☀️
+                  type_name: SUNNY_DAY
                 success: true
                 timestamp_iso8601: '2026-07-20T18:19:48+00:00'
                 timestamp_unix: 1784571588
@@ -182,57 +181,42 @@ components:
             - 29
             - 28
             - -1
-        type_string:
-          description: 'Human-readable weather description.'
+        type_name:
+          description: 'Met Office weather type as a stable enum-name token (e.g. "HEAVY_RAIN"); the consumer maps it to a display name and emoji.'
           type: string
           enum:
-            - 'Clear night'
-            - Cloudy
-            - Drizzle
-            - Fog
-            - Hail
-            - 'Hail shower (day)'
-            - 'Hail shower (night)'
-            - 'Heavy rain'
-            - 'Heavy rain shower (day)'
-            - 'Heavy rain shower (night)'
-            - 'Heavy snow'
-            - 'Heavy snow shower (day)'
-            - 'Heavy snow shower (night)'
-            - 'Light rain'
-            - 'Light rain shower (day)'
-            - 'Light rain shower (night)'
-            - 'Light snow'
-            - 'Light snow shower (day)'
-            - 'Light snow shower (night)'
-            - Mist
-            - Overcast
-            - 'Partly cloudy (day)'
-            - 'Partly cloudy (night)'
-            - Sleet
-            - 'Sleet shower (day)'
-            - 'Sleet shower (night)'
-            - 'Sunny day'
-            - Thunder
-            - 'Thunder shower (day)'
-            - 'Thunder shower (night)'
-            - 'Trace rain'
-        type_emoji:
-          description: 'Weather emoji.'
-          type: string
-          enum:
-            - 🌙
-            - ☁️
-            - 🌧️
-            - 🌫️
-            - 🌨
-            - 🌧
-            - 🌦
-            - 🌨️
-            - 🌥
-            - ☀️
-            - 🌩
-            - ⛈️
+            - CLEAR_NIGHT
+            - CLOUDY
+            - DRIZZLE
+            - FOG
+            - HAIL
+            - HAIL_SHOWER_DAY
+            - HAIL_SHOWER_NIGHT
+            - HEAVY_RAIN
+            - HEAVY_RAIN_SHOWER_DAY
+            - HEAVY_RAIN_SHOWER_NIGHT
+            - HEAVY_SNOW
+            - HEAVY_SNOW_SHOWER_DAY
+            - HEAVY_SNOW_SHOWER_NIGHT
+            - LIGHT_RAIN
+            - LIGHT_RAIN_SHOWER_DAY
+            - LIGHT_RAIN_SHOWER_NIGHT
+            - LIGHT_SNOW
+            - LIGHT_SNOW_SHOWER_DAY
+            - LIGHT_SNOW_SHOWER_NIGHT
+            - MIST
+            - NOT_USED
+            - OVERCAST
+            - PARTLY_CLOUDY_DAY
+            - PARTLY_CLOUDY_NIGHT
+            - SLEET
+            - SLEET_SHOWER_DAY
+            - SLEET_SHOWER_NIGHT
+            - SUNNY_DAY
+            - THUNDER
+            - THUNDER_SHOWER_DAY
+            - THUNDER_SHOWER_NIGHT
+            - TRACE_RAIN
       type: object
       additionalProperties: false
     ErrorEnvelope:

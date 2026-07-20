@@ -9,7 +9,6 @@ use ChristianBrown\GcpFunction\CloudFunctionInterface;
 use ChristianBrown\GcpFunction\FunctionConfigTransformer;
 use ChristianBrown\MetOffice\Coordinates;
 use ChristianBrown\MetOffice\MetOffice;
-use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformer;
 use ChristianBrown\MetOfficeWeather\CloudFunctionFactoryInterface;
 use ChristianBrown\MetOfficeWeather\ConfigInterface;
 use ChristianBrown\MetOfficeWeather\ConfigTransformer;
@@ -45,7 +44,7 @@ function run(ServerRequestInterface $request): ResponseInterface
             $metOffice = new MetOffice();
             $hourlyApi = $metOffice->siteSpecific($config->getApiKey())->getHourlyForecastApi();
 
-            $outputTransformer = new OutputTransformer(new WeatherTypeTransformer());
+            $outputTransformer = new OutputTransformer();
 
             $coordinates = new Coordinates($config->getLatitude(), $config->getLongitude());
             $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $coordinates);

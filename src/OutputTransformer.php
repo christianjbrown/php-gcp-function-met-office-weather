@@ -6,7 +6,6 @@ namespace ChristianBrown\MetOfficeWeather;
 
 use ChristianBrown\MetOffice\Enums\WindDirection;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
-use ChristianBrown\MetOffice\Transformer\WeatherTypeTransformerInterface;
 
 use function gmdate;
 
@@ -14,13 +13,6 @@ use const DATE_ATOM;
 
 final class OutputTransformer implements OutputTransformerInterface
 {
-    private WeatherTypeTransformerInterface $weatherTypeTransformer;
-
-    public function __construct(WeatherTypeTransformerInterface $weatherTypeTransformer)
-    {
-        $this->weatherTypeTransformer = $weatherTypeTransformer;
-    }
-
     /**
      * @return mixed[]
      */
@@ -48,8 +40,7 @@ final class OutputTransformer implements OutputTransformerInterface
         $data += $this->windGust($step);
         $data += $this->windDirection($step);
         $data += $this->type($step);
-        $data += $this->typeString($step);
-        $data += $this->typeEmoji($step);
+        $data += $this->typeName($step);
 
         return $data;
     }
@@ -122,35 +113,14 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function typeEmoji(HourlyForecastTimeStepInterface $step): array
+    private function typeName(HourlyForecastTimeStepInterface $step): array
     {
         $code = $step->getSignificantWeatherCode();
         if (null === $code) {
             return [];
         }
-        $emoji = $this->weatherTypeTransformer->transformToEmoji($code);
-        if (null === $emoji) {
-            return [];
-        }
 
-        return [self::KEY_TYPE_EMOJI => $emoji];
-    }
-
-    /**
-     * @return mixed[]
-     */
-    private function typeString(HourlyForecastTimeStepInterface $step): array
-    {
-        $code = $step->getSignificantWeatherCode();
-        if (null === $code) {
-            return [];
-        }
-        $name = $this->weatherTypeTransformer->transform($code);
-        if (null === $name) {
-            return [];
-        }
-
-        return [self::KEY_TYPE_STRING => $name];
+        return [self::KEY_TYPE_NAME => $code->name];
     }
 
     /**

@@ -92,8 +92,7 @@ curl http://localhost:8080
     "wind_direction": "E",
     "wind_direction_degrees": 90,
     "type": 1,
-    "type_string": "Sunny day",
-    "type_emoji": "☀️"
+    "type_name": "SUNNY_DAY"
 }
 ```
 
@@ -109,9 +108,8 @@ curl http://localhost:8080
 - `wind_gust` — maximum 10 m wind gust in **mph** (converted from m/s at full precision). Present only when reported.
 - `wind_direction` — the 10 m wind direction as a 16-point compass code (e.g. `ENE`). Present only when reported.
 - `wind_direction_degrees` — the same 10 m wind direction as raw degrees (e.g. `90`). Present only when reported.
-- `type` — the Met Office significant weather code. Present only when reported.
-- `type_string` — a human-readable name for the weather code (e.g. `Sunny day`). Present only when the code maps to a name.
-- `type_emoji` — an emoji for the weather code. Present only when the code maps to an emoji.
+- `type` — the Met Office significant weather code (int, e.g. `1`). Present only when reported.
+- `type_name` — the weather code as a stable `WeatherType` enum-name token (e.g. `SUNNY_DAY`). Present only when reported. Display wording (a human-readable name and emoji) is intentionally the consumer's concern — the website maps this token to a localised name and emoji.
 
 
 
@@ -159,7 +157,7 @@ The entry point is `run()` in [`index.php`](index.php), which wires the pieces t
 - **`ConfigTransformer`** reads the environment into a `Config` (API key, latitude, longitude + request/caching config).
 - **`MetOffice`** (from [`christianjbrown/php-met-office-weather-datahub-api-lib`](https://github.com/christianjbrown/php-met-office-weather-datahub-api-lib)) provides the hourly forecast API client.
 - **`DataProvider`** fetches the hourly forecast for the configured location and selects the current hour's step.
-- **`OutputTransformer`** shapes that step into the JSON response, converting wind speeds to mph and mapping the weather code to a name and emoji via the library's `WeatherTypeTransformer`.
+- **`OutputTransformer`** shapes that step into the JSON response, converting wind speeds to mph and emitting the weather code as both its raw number (`type`) and its `WeatherType` enum-name token (`type_name`); display wording is left to the consumer.
 - **`CloudFunction`** (from [`christianjbrown/php-gcp-function-lib`](https://github.com/christianjbrown/php-gcp-function-lib)) handles the HTTP request/response, header/origin gating, and caching headers.
 
 
