@@ -249,12 +249,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-user-friendly-exception-lib.git",
-                "reference": "9996493f8e845c749487f5e527e98b045c628bfd"
+                "reference": "63d6bbc0f37d17b85029717694cd86dd94bf1607"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-user-friendly-exception-lib/zipball/9996493f8e845c749487f5e527e98b045c628bfd",
-                "reference": "9996493f8e845c749487f5e527e98b045c628bfd",
+                "url": "https://api.github.com/repos/christianjbrown/php-user-friendly-exception-lib/zipball/63d6bbc0f37d17b85029717694cd86dd94bf1607",
+                "reference": "63d6bbc0f37d17b85029717694cd86dd94bf1607",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-user-friendly-exception-lib/tree/main"
             },
-            "time": "2026-07-20T10:27:34+00:00"
+            "time": "2026-07-20T12:06:50+00:00"
         },
         {
             "name": "cloudevents/sdk-php",
