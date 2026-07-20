@@ -12,7 +12,8 @@ use ChristianBrown\UserFriendlyException\UserFriendlyException;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function array_filter;
-use function array_key_last;
+use function array_first;
+use function array_last;
 use function array_values;
 use function time;
 use function usort;
@@ -56,7 +57,7 @@ final class DataProvider implements DataProviderInterface
      * (the "current" hour); when every step is in the future, falls back to the
      * earliest step.
      *
-     * @param ForecastTimeStepInterface[] $timeSteps
+     * @param non-empty-array<ForecastTimeStepInterface> $timeSteps
      */
     private function selectCurrentStep(array $timeSteps): ForecastTimeStepInterface
     {
@@ -70,16 +71,16 @@ final class DataProvider implements DataProviderInterface
         );
 
         if ([] === $past) {
-            return $sorted[0];
+            return array_first($sorted);
         }
 
-        return $past[array_key_last($past)];
+        return array_last($past);
     }
 
     /**
-     * @param ForecastTimeStepInterface[] $timeSteps
+     * @param non-empty-array<ForecastTimeStepInterface> $timeSteps
      *
-     * @return ForecastTimeStepInterface[]
+     * @return non-empty-list<ForecastTimeStepInterface>
      */
     private function sortByTime(array $timeSteps): array
     {
