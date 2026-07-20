@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather;
 
+use ChristianBrown\MetOffice\Enums\WeatherType;
+use ChristianBrown\MetOffice\Enums\WindDirection;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 use OpenApi\Attributes as OA;
 
@@ -29,9 +31,9 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::KEY_VISIBILITY, description: 'Visibility (metres).', type: 'integer'),
         new OA\Property(property: self::KEY_WIND_SPEED, description: '10m wind speed (mph).', type: 'number'),
         new OA\Property(property: self::KEY_WIND_GUST, description: 'Maximum 10m wind gust (mph).', type: 'number'),
-        new OA\Property(property: self::KEY_WIND_DIRECTION, description: '10m wind direction as a compass point.', type: 'string'),
+        new OA\Property(property: self::KEY_WIND_DIRECTION, description: '10m wind direction as a compass point.', type: 'string', enum: WindDirection::class),
         new OA\Property(property: self::KEY_WIND_DIRECTION_DEGREES, description: '10m wind direction (degrees).', type: 'integer'),
-        new OA\Property(property: self::KEY_TYPE, description: 'Met Office significant weather code.', type: 'integer'),
+        new OA\Property(property: self::KEY_TYPE, description: 'Met Office significant weather code.', type: 'integer', enum: WeatherType::class),
         new OA\Property(property: self::KEY_TYPE_STRING, description: 'Human-readable weather description.', type: 'string'),
         new OA\Property(property: self::KEY_TYPE_EMOJI, description: 'Weather emoji.', type: 'string'),
     ],
