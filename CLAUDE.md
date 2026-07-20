@@ -5,7 +5,7 @@ small, uniform, and highly opinionated, so new code should be indistinguishable 
 
 ## What this is
 
-A deployable **Google Cloud Function** (PHP 8.5+, `php85` runtime) that reads the current outdoor
+A deployable **Google Cloud Run function** (PHP 8.5+, `php85` runtime) that reads the current outdoor
 weather for a fixed latitude/longitude from the Met Office Weather DataHub **Site-Specific hourly**
 forecast API and returns it as a single JSON envelope. It is an **application, not a library** — it
 wires the sibling `christianjbrown/*` libraries together behind an HTTP entry point: the `run()`
