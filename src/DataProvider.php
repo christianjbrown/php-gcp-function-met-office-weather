@@ -33,6 +33,9 @@ final class DataProvider implements DataProviderInterface
         $this->now = time();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getData(ServerRequestInterface $request): array
     {
         $forecast = $this->hourlyForecastApi->getForecast($this->coordinates);
