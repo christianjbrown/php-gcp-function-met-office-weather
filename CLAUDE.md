@@ -34,6 +34,10 @@ gitignored and Composer-installed, so run `composer install` first. Unlike the l
 | Check code style | `composer check-style` |
 | Auto-fix code style | `composer fix-style` |
 | Check / fix style on git diff only | `composer check-style-diff` / `composer fix-style-diff` |
+| Regenerate `openapi.yaml` from `#[OA\...]` attributes | `composer openapi:generate` |
+| Preview the API docs live in a browser | `npm install` then `npm run docs:preview` |
+| Build a shareable static `openapi.html` | `npm run docs:build` |
+| Lint `openapi.yaml` | `npm run docs:lint` |
 
 `composer start` exports `.local.env` (git-ignored) and serves the function at `http://localhost:8080`
 (override with `PORT`) via `FUNCTION_TARGET=run` on the Functions Framework router. A local run needs
@@ -47,6 +51,17 @@ scripts are thin wrappers over it.
 Static analysis is **PHPStan at `level: max`** (`phpstan.neon.dist`). Always run `composer fix-style`
 first, then `composer check-style` to surface anything left to fix by hand, then `composer stan` and
 `composer test` before finishing.
+
+The `npm run docs:*` scripts are **dev-only** [Redoc](https://redocly.com/redoc) tooling
+(`@redocly/cli`, in `package.json`) for rendering/linting the committed `openapi.yaml`. They are
+completely separate from the PHP runtime: `node_modules/`, `package.json`, `package-lock.json`,
+`redocly.yaml`, and the generated `openapi.html` are all in `.gcloudignore` (kept out of the deploy so
+the `php85` buildpack still sees a pure-PHP app) and the build artifacts (`node_modules/`,
+`openapi.html`) are git-ignored. `redocly.yaml` relaxes three opinionated Redocly governance rules
+(`no-empty-servers`, `security-defined`, `info-license`) that don't fit this single header-gated
+endpoint — the config is the place to do that because `openapi.yaml` is generated and must not be
+hand-edited. `@redocly/cli` is pinned to `^1.x` because the `preview-docs` live-server command was
+removed in v2.
 
 ## Architecture
 
