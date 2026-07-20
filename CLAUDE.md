@@ -40,8 +40,10 @@ gitignored and Composer-installed, so run `composer install` first. Unlike the l
 at least `MET_OFFICE_WEATHER_API_KEY`, `MET_OFFICE_WEATHER_LATITUDE`, `MET_OFFICE_WEATHER_LONGITUDE`
 and `K_REVISION` set — see `README.md` for the full env-var list.
 
-Style tooling comes from the `christianjbrown/php-code-quality-scripts` dev dependency (php-cs-fixer
-+ PHP_CodeSniffer, **Symfony2 coding standard**); the `bin/php-cs*` scripts are thin wrappers over it.
+Style tooling comes from the `christianjbrown/php-code-quality-scripts` dev dependency (`check-style`
+runs **PHP_CodeSniffer 4** with the `ChristianBrown` standard — slevomat sniffs plus PSR/PEAR/Squiz/Generic
+— for linting, while **php-cs-fixer** with `@PhpCsFixer`/`@Symfony` handles formatting); the `bin/php-cs*`
+scripts are thin wrappers over it.
 Static analysis is **PHPStan at `level: max`** (`phpstan.neon.dist`). Always run `composer fix-style`
 first, then `composer check-style` to surface anything left to fix by hand, then `composer stan` and
 `composer test` before finishing.
