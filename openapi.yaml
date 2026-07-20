@@ -103,18 +103,113 @@ components:
         wind_direction:
           description: '10m wind direction as a compass point.'
           type: string
+          enum:
+            - E
+            - ENE
+            - ESE
+            - 'N'
+            - NE
+            - NNE
+            - NNW
+            - NW
+            - S
+            - SE
+            - SSE
+            - SSW
+            - SW
+            - W
+            - WNW
+            - WSW
         wind_direction_degrees:
           description: '10m wind direction (degrees).'
           type: integer
         type:
           description: 'Met Office significant weather code.'
           type: integer
+          enum:
+            - 0
+            - 7
+            - 11
+            - 6
+            - 21
+            - 20
+            - 19
+            - 15
+            - 14
+            - 13
+            - 27
+            - 26
+            - 25
+            - 12
+            - 10
+            - 9
+            - 24
+            - 23
+            - 22
+            - 5
+            - 4
+            - 8
+            - 3
+            - 2
+            - 18
+            - 17
+            - 16
+            - 1
+            - 30
+            - 29
+            - 28
+            - -1
         type_string:
           description: 'Human-readable weather description.'
           type: string
+          enum:
+            - 'Clear night'
+            - Cloudy
+            - Drizzle
+            - Fog
+            - Hail
+            - 'Hail shower (day)'
+            - 'Hail shower (night)'
+            - 'Heavy rain'
+            - 'Heavy rain shower (day)'
+            - 'Heavy rain shower (night)'
+            - 'Heavy snow'
+            - 'Heavy snow shower (day)'
+            - 'Heavy snow shower (night)'
+            - 'Light rain'
+            - 'Light rain shower (day)'
+            - 'Light rain shower (night)'
+            - 'Light snow'
+            - 'Light snow shower (day)'
+            - 'Light snow shower (night)'
+            - Mist
+            - Overcast
+            - 'Partly cloudy (day)'
+            - 'Partly cloudy (night)'
+            - Sleet
+            - 'Sleet shower (day)'
+            - 'Sleet shower (night)'
+            - 'Sunny day'
+            - Thunder
+            - 'Thunder shower (day)'
+            - 'Thunder shower (night)'
+            - 'Trace rain'
         type_emoji:
           description: 'Weather emoji.'
           type: string
+          enum:
+            - 🌙
+            - ☁️
+            - 🌧️
+            - 🌫️
+            - 🌨
+            - 🌧
+            - 🌦
+            - 🌨️
+            - 🌥
+            - ☀️
+            - 🌩
+            - ⛈️
       type: object
       additionalProperties: false
     ErrorEnvelope:
