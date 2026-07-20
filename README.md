@@ -127,6 +127,22 @@ composer fix-style-diff    # auto-fix changed files only
 
 
 
+## :books: API documentation
+
+The committed `openapi.yaml` is generated from the `#[OA\...]` attributes in `src/`
+(`composer openapi:generate`). Dev-only [Redoc](https://redocly.com/redoc) tooling
+(`@redocly/cli`) renders and lints it — it is separate from the PHP runtime and excluded
+from both git and the GCP deploy, so it never affects the deployed function.
+
+```bash
+npm install            # one-time: installs the docs tooling (Node/npm)
+npm run docs:preview   # live browser preview of openapi.yaml (local server)
+npm run docs:build     # write a shareable static openapi.html (git-ignored build artifact)
+npm run docs:lint      # lint openapi.yaml
+```
+
+
+
 ## :rocket: CI & deployment
 
 - **`.github/workflows/ci.yml`** runs on pull requests to `main`: `composer install`, PHPCS, PHPStan, and PHPUnit.
