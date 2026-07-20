@@ -129,6 +129,8 @@ components:
         success:
           description: 'Always false for an error response.'
           type: boolean
+          enum:
+            - false
         timestamp_unix:
           description: 'When the response was generated (Unix seconds).'
           type: integer
@@ -156,6 +158,8 @@ components:
         success:
           description: 'Always true for a success response.'
           type: boolean
+          enum:
+            - true
         timestamp_unix:
           description: 'When the response was generated (Unix seconds).'
           type: integer
