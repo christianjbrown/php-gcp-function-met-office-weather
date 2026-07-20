@@ -8,5 +8,5 @@ use ChristianBrown\GcpFunction\DataProviderInterface as BaseDataProviderInterfac
 
 interface DataProviderInterface extends BaseDataProviderInterface
 {
-    public const ERROR_NO_FORECAST = 'No weather forecast is currently available for this location.';
+    public const string ERROR_NO_FORECAST = 'No weather forecast is currently available for this location.';
 }
