@@ -16,3 +16,4 @@ vendor/
 node_modules
 /node_modules/
 /openapi.html
+_site/
