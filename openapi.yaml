@@ -39,6 +39,29 @@ paths:
                 allOf:
                   - { $ref: '#/components/schemas/SuccessEnvelope' }
                   - { properties: { data: { $ref: '#/components/schemas/WeatherData' } }, type: object }
+              example:
+                data:
+                  valid_from: 1784570400
+                  valid_from_iso8601: '2026-07-20T18:00:00+00:00'
+                  valid_to: 1784574000
+                  valid_to_iso8601: '2026-07-20T19:00:00+00:00'
+                  temp: 23.69
+                  temp_feels_like: 22.05
+                  humidity: 32.39
+                  precipitation: 0
+                  uv_index: 1
+                  visibility: 31474
+                  wind_speed: 6.1515748031496
+                  wind_gust: 13.600572655691
+                  wind_direction: NE
+                  wind_direction_degrees: 40
+                  type: 1
+                  type_string: 'Sunny day'
+                  type_emoji: ☀️
+                success: true
+                timestamp_iso8601: '2026-07-20T18:19:48+00:00'
+                timestamp_unix: 1784571588
+                version: get-met-office-weather-00028-dig
         '401':
           description: 'The request failed header authorization.'
           content:
