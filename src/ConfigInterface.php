@@ -10,6 +10,8 @@ interface ConfigInterface
 {
     public function getApiKey(): string;
 
+    public function getDatabaseDsn(): string;
+
     public function getFunctionConfig(): FunctionConfigInterface;
 
     public function getLatitude(): float;

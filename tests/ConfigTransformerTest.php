@@ -30,6 +30,7 @@ final class ConfigTransformerTest extends TestCase
             ConfigTransformerInterface::ENV_API_KEY => 'test-api-key',
             ConfigTransformerInterface::ENV_LATITUDE => '51.546111',
             ConfigTransformerInterface::ENV_LONGITUDE => '-0.183111',
+            ConfigTransformerInterface::ENV_DATABASE_DSN => 'test-database-dsn',
         ];
 
         $functionConfig = self::createStub(FunctionConfigInterface::class);
@@ -46,6 +47,7 @@ final class ConfigTransformerTest extends TestCase
         self::assertSame('test-api-key', $actual->getApiKey());
         self::assertSame(51.546111, $actual->getLatitude());
         self::assertSame(-0.183111, $actual->getLongitude());
+        self::assertSame('test-database-dsn', $actual->getDatabaseDsn());
         self::assertSame($functionConfig, $actual->getFunctionConfig());
     }
 
@@ -61,6 +63,25 @@ final class ConfigTransformerTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('%s not set or not a string', ConfigTransformerInterface::ENV_API_KEY));
+
+        $functionConfigTransformer = self::createStub(FunctionConfigTransformerInterface::class);
+
+        $transformer = new ConfigTransformer($functionConfigTransformer);
+        $transformer->transform($env);
+    }
+
+    /**
+     * @param mixed[] $env
+     *
+     * @throws Exception
+     */
+    #[TestWith([[ConfigTransformerInterface::ENV_API_KEY => 'test-api-key', ConfigTransformerInterface::ENV_LATITUDE => '51.5', ConfigTransformerInterface::ENV_LONGITUDE => '-0.18']])]
+    #[TestWith([[ConfigTransformerInterface::ENV_API_KEY => 'test-api-key', ConfigTransformerInterface::ENV_LATITUDE => '51.5', ConfigTransformerInterface::ENV_LONGITUDE => '-0.18', ConfigTransformerInterface::ENV_DATABASE_DSN => null]])]
+    #[TestWith([[ConfigTransformerInterface::ENV_API_KEY => 'test-api-key', ConfigTransformerInterface::ENV_LATITUDE => '51.5', ConfigTransformerInterface::ENV_LONGITUDE => '-0.18', ConfigTransformerInterface::ENV_DATABASE_DSN => 42]])]
+    public function testTransformWithMissingDatabaseDsn(array $env): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('%s not set or not a string', ConfigTransformerInterface::ENV_DATABASE_DSN));
 
         $functionConfigTransformer = self::createStub(FunctionConfigTransformerInterface::class);
 

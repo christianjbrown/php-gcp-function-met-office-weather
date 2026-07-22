@@ -3,6 +3,8 @@
     "description": "A PHP 8.5+ Google Cloud Function that reads the current outdoor weather from the Met Office Weather DataHub Site-Specific hourly API and returns it as a JSON envelope.",
     "type": "project",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "keywords": [
         "google-cloud",
         "cloud-run",
@@ -20,6 +22,7 @@
     "require": {
         "php": "^8.5",
         "christianjbrown/php-api-client-lib": "dev-main",
+        "christianjbrown/php-christianbrown-database-orm": "dev-main",
         "christianjbrown/php-gcp-function-lib": "dev-main",
         "christianjbrown/php-met-office-weather-datahub-api-lib": "dev-main",
         "christianjbrown/php-user-friendly-exception-lib": "dev-main",
@@ -86,7 +89,15 @@
         },
         {
             "type": "github",
+            "url": "git@github.com:christianjbrown/php-christianbrown-database-orm.git"
+        },
+        {
+            "type": "github",
             "url": "git@github.com:christianjbrown/php-code-quality-scripts.git"
+        },
+        {
+            "type": "github",
+            "url": "git@github.com:christianjbrown/php-key-value-store-lib.git"
         },
         {
             "type": "github",

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 date_default_timezone_set('UTC');
 
+use ChristianBrown\Database\ClimateMeasurementRecorder;
+use ChristianBrown\Database\EntityManagerFactory;
 use ChristianBrown\GcpFunction\CloudFunction;
 use ChristianBrown\GcpFunction\CloudFunctionInterface;
 use ChristianBrown\GcpFunction\FunctionConfigTransformer;
@@ -46,8 +48,14 @@ function run(ServerRequestInterface $request): ResponseInterface
 
             $outputTransformer = new OutputTransformer();
 
+            // Record each observed reading to the shared climate-history table.
+            // The write is best-effort — DataProvider isolates it so a failure
+            // never disturbs the response.
+            $entityManager = (new EntityManagerFactory($config->getDatabaseDsn()))->getEntityManager();
+            $climateMeasurementRecorder = new ClimateMeasurementRecorder($entityManager);
+
             $coordinates = new Coordinates($config->getLatitude(), $config->getLongitude());
-            $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $coordinates);
+            $dataProvider = new DataProvider($hourlyApi, $outputTransformer, $climateMeasurementRecorder, $coordinates);
 
             return new CloudFunction($dataProvider, $config->getFunctionConfig());
         }

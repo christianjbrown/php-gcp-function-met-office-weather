@@ -52,8 +52,16 @@ final class ConfigTransformer implements ConfigTransformerInterface
         }
         $longitude = (float) $env[self::ENV_LONGITUDE];
 
+        if (empty($env[self::ENV_DATABASE_DSN])) {
+            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_DATABASE_DSN));
+        }
+        if (!is_string($env[self::ENV_DATABASE_DSN])) {
+            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_DATABASE_DSN));
+        }
+        $databaseDsn = $env[self::ENV_DATABASE_DSN];
+
         $requestConfig = $this->functionConfigTransformer->transform($env);
 
-        return new Config($requestConfig, $apiKey, $latitude, $longitude);
+        return new Config($requestConfig, $apiKey, $latitude, $longitude, $databaseDsn);
     }
 }
