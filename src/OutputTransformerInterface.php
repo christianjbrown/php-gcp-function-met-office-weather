@@ -29,6 +29,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: self::KEY_PRECIPITATION, description: 'Probability of precipitation (percent).', type: 'integer'),
         new OA\Property(property: self::KEY_UV_INDEX, description: 'UV index.', type: 'integer'),
         new OA\Property(property: self::KEY_VISIBILITY, description: 'Visibility (metres).', type: 'integer'),
+        new OA\Property(property: self::KEY_PRESSURE, description: 'Mean sea level pressure (hectopascals).', type: 'number'),
+        new OA\Property(property: self::KEY_DEW_POINT, description: 'Dew point temperature (degrees Celsius).', type: 'number'),
         new OA\Property(property: self::KEY_WIND_SPEED, description: '10m wind speed (mph).', type: 'number'),
         new OA\Property(property: self::KEY_WIND_GUST, description: 'Maximum 10m wind gust (mph).', type: 'number'),
         new OA\Property(property: self::KEY_WIND_DIRECTION, description: '10m wind direction as a compass point.', type: 'string', enum: WindDirection::class),
@@ -41,8 +43,10 @@ use OpenApi\Attributes as OA;
 )]
 interface OutputTransformerInterface
 {
+    public const string KEY_DEW_POINT = 'dew_point';
     public const string KEY_HUMIDITY = 'humidity';
     public const string KEY_PRECIPITATION = 'precipitation';
+    public const string KEY_PRESSURE = 'pressure';
     public const string KEY_TEMPERATURE = 'temp';
     public const string KEY_TEMPERATURE_FEELS_LIKE = 'temp_feels_like';
     public const string KEY_TYPE = 'type';
@@ -58,6 +62,7 @@ interface OutputTransformerInterface
     public const string KEY_WIND_GUST = 'wind_gust';
     public const string KEY_WIND_SPEED = 'wind_speed';
     public const float METRES_PER_SECOND_TO_MPH = 2.2369362920544;
+    public const int PASCALS_PER_HECTOPASCAL = 100;
     public const int WINDOW_SECONDS = 3600;
 
     /**

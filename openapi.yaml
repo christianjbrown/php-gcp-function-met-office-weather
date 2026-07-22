@@ -116,6 +116,12 @@ components:
         visibility:
           description: 'Visibility (metres).'
           type: integer
+        pressure:
+          description: 'Mean sea level pressure (hectopascals).'
+          type: number
+        dew_point:
+          description: 'Dew point temperature (degrees Celsius).'
+          type: number
         wind_speed:
           description: '10m wind speed (mph).'
           type: number

@@ -36,6 +36,8 @@ final class OutputTransformer implements OutputTransformerInterface
         $data += $this->precipitation($step);
         $data += $this->uvIndex($step);
         $data += $this->visibility($step);
+        $data += $this->pressure($step);
+        $data += $this->dewPoint($step);
         $data += $this->windSpeed($step);
         $data += $this->windGust($step);
         $data += $this->windDirection($step);
@@ -43,6 +45,19 @@ final class OutputTransformer implements OutputTransformerInterface
         $data += $this->typeName($step);
 
         return $data;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function dewPoint(HourlyForecastTimeStepInterface $step): array
+    {
+        $value = $step->getScreenDewPointTemperature();
+        if (null === $value) {
+            return [];
+        }
+
+        return [self::KEY_DEW_POINT => $value];
     }
 
     /**
@@ -82,6 +97,19 @@ final class OutputTransformer implements OutputTransformerInterface
         }
 
         return [self::KEY_PRECIPITATION => $value];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function pressure(HourlyForecastTimeStepInterface $step): array
+    {
+        $value = $step->getMslp();
+        if (null === $value) {
+            return [];
+        }
+
+        return [self::KEY_PRESSURE => $value / self::PASCALS_PER_HECTOPASCAL];
     }
 
     /**
