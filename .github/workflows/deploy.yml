@@ -34,7 +34,7 @@ jobs:
           runtime: 'php85'
           entry_point: 'run'
           region: 'europe-west2'
-          memory: '128Mi'
+          memory: '256Mi'
           min_instance_count: 0
           max_instance_count: 1
           service_timeout: '60s'
@@ -45,6 +45,7 @@ jobs:
             MET_OFFICE_WEATHER_API_KEY=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_OFFICE_WEATHER_API_KEY/versions/latest
             MET_OFFICE_WEATHER_LATITUDE=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_OFFICE_WEATHER_LATITUDE/versions/latest
             MET_OFFICE_WEATHER_LONGITUDE=projects/${{ vars.GCP_PROJECT_ID }}/secrets/MET_OFFICE_WEATHER_LONGITUDE/versions/latest
+            CHRISTIANBROWN_DATABASE_DSN=projects/${{ vars.GCP_PROJECT_ID }}/secrets/CHRISTIANBROWN_DATABASE_DSN/versions/latest
             REQUIRED_HEADER_VALUE=projects/${{ vars.GCP_PROJECT_ID }}/secrets/FASTLY_REQUIRED_HEADER_VALUE/versions/latest
 
       # Gen2 functions are backed by Cloud Run and are NOT public by default.
@@ -58,6 +59,16 @@ jobs:
             --region='europe-west2' \
             --member='allUsers' \
             --role='roles/run.invoker'
+
+      # Attach the shared Cloud SQL instance (in the separate shared-data-services
+      # project) to this Gen2/Cloud Run service so the climate-history table is
+      # reachable over the /cloudsql unix socket named in CHRISTIANBROWN_DATABASE_DSN.
+      # The runtime service account needs roles/cloudsql.client on that project.
+      - name: 'Connect Cloud SQL instance'
+        run: |
+          gcloud run services update "get-met-office-weather" \
+            --region='europe-west2' \
+            --set-cloudsql-instances="${{ vars.GCP_CLOUD_SQL_INSTANCE }}"
 
       - name: 'Test Cloud Function'
         run: 'curl "${{ steps.deploy.outputs.url }}"'

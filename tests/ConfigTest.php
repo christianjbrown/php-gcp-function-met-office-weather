@@ -19,10 +19,11 @@ final class ConfigTest extends TestCase
     public function test(): void
     {
         $functionConfig = self::createStub(FunctionConfigInterface::class);
-        $config = new Config($functionConfig, 'test-api-key', 51.5, -0.18);
+        $config = new Config($functionConfig, 'test-api-key', 51.5, -0.18, 'test-database-dsn');
         self::assertSame($functionConfig, $config->getFunctionConfig());
         self::assertSame('test-api-key', $config->getApiKey());
         self::assertSame(51.5, $config->getLatitude());
         self::assertSame(-0.18, $config->getLongitude());
+        self::assertSame('test-database-dsn', $config->getDatabaseDsn());
     }
 }

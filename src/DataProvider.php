@@ -4,31 +4,38 @@ declare(strict_types=1);
 
 namespace ChristianBrown\MetOfficeWeather;
 
+use ChristianBrown\Database\ClimateMeasurementRecorderInterface;
+use ChristianBrown\Database\Entity\MetOfficeWeather;
 use ChristianBrown\MetOffice\CoordinatesInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Api\HourlyForecastApiInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\ForecastTimeStepInterface;
 use ChristianBrown\MetOffice\SiteSpecific\Model\HourlyForecastTimeStepInterface;
 use ChristianBrown\UserFriendlyException\UserFriendlyException;
+use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 use function array_filter;
 use function array_first;
 use function array_last;
 use function array_values;
+use function error_log;
 use function time;
 use function usort;
 
 final class DataProvider implements DataProviderInterface
 {
+    private ClimateMeasurementRecorderInterface $climateMeasurementRecorder;
     private CoordinatesInterface $coordinates;
     private HourlyForecastApiInterface $hourlyForecastApi;
     private int $now;
     private OutputTransformerInterface $outputTransformer;
 
-    public function __construct(HourlyForecastApiInterface $hourlyForecastApi, OutputTransformerInterface $outputTransformer, CoordinatesInterface $coordinates)
+    public function __construct(HourlyForecastApiInterface $hourlyForecastApi, OutputTransformerInterface $outputTransformer, ClimateMeasurementRecorderInterface $climateMeasurementRecorder, CoordinatesInterface $coordinates)
     {
         $this->hourlyForecastApi = $hourlyForecastApi;
         $this->outputTransformer = $outputTransformer;
+        $this->climateMeasurementRecorder = $climateMeasurementRecorder;
         $this->coordinates = $coordinates;
         $this->now = time();
     }
@@ -52,7 +59,36 @@ final class DataProvider implements DataProviderInterface
             throw new UserFriendlyException(self::ERROR_NO_FORECAST);
         }
 
+        $this->recordClimate($step);
+
         return $this->outputTransformer->transform($step);
+    }
+
+    /**
+     * Best-effort persistence of the observed temperature/humidity. The write is
+     * wrapped so a database failure is logged, never propagated — it must not
+     * disturb the function's response.
+     */
+    private function recordClimate(HourlyForecastTimeStepInterface $step): void
+    {
+        $temperature = $step->getScreenTemperature();
+        $humidity = $step->getScreenRelativeHumidity();
+
+        // Nothing worth recording when the step reports neither value.
+        if ([] === array_filter([$temperature, $humidity], static fn (?float $value): bool => null !== $value)) {
+            return;
+        }
+
+        try {
+            $this->climateMeasurementRecorder->record(
+                (new MetOfficeWeather())
+                    ->setRecordedAt(new DateTimeImmutable())
+                    ->setTemperature($temperature)
+                    ->setHumidity($humidity)
+            );
+        } catch (Throwable $exception) {
+            error_log('Met Office weather write failed: '.$exception->getMessage());
+        }
     }
 
     /**

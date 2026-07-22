@@ -12,11 +12,20 @@ wires the sibling `christianjbrown/*` libraries together behind an HTTP entry po
 function in `index.php` builds the config, constructs a `MetOffice` client, and returns the PSR-7
 response.
 
-The app consumes three private `dev-main` sibling packages: `php-gcp-function-lib` (the HTTP
+The app consumes several private `dev-main` sibling packages: `php-gcp-function-lib` (the HTTP
 envelope/gating/caching framework), `php-met-office-api-lib` (the read-only Met Office Weather
-DataHub client), `php-user-friendly-exception-lib`, plus `php-code-quality-scripts` (dev). It runs
+DataHub client), `php-user-friendly-exception-lib`, `php-christianbrown-database-orm` (the shared
+Doctrine ORM for the `christianbrown` schema), plus `php-code-quality-scripts` (dev). It runs
 on Google's [Functions Framework](https://github.com/GoogleCloudPlatform/functions-framework-php)
 locally.
+
+**Climate history.** On each request the function also records the observed outdoor temperature and
+humidity to the shared `met_office_weather` table (append-only, one row per origin request), via the
+shared `EntityManagerFactory` + `ClimateMeasurementRecorder` from `php-christianbrown-database-orm`.
+The write is best-effort: `DataProvider` wraps it in a `try/catch` and `error_log()`s failures so a
+database problem never disturbs the response. This is the app's only stateful behaviour; it needs the
+`CHRISTIANBROWN_DATABASE_DSN` env var and (in production) the shared Cloud SQL instance attached over
+the `/cloudsql` socket.
 
 ## Commands
 
@@ -41,8 +50,9 @@ gitignored and Composer-installed, so run `composer install` first. Unlike the l
 
 `composer start` exports `.local.env` (git-ignored) and serves the function at `http://localhost:8080`
 (override with `PORT`) via `FUNCTION_TARGET=run` on the Functions Framework router. A local run needs
-at least `MET_OFFICE_WEATHER_API_KEY`, `MET_OFFICE_WEATHER_LATITUDE`, `MET_OFFICE_WEATHER_LONGITUDE`
-and `K_REVISION` set — see `README.md` for the full env-var list.
+at least `MET_OFFICE_WEATHER_API_KEY`, `MET_OFFICE_WEATHER_LATITUDE`, `MET_OFFICE_WEATHER_LONGITUDE`,
+`CHRISTIANBROWN_DATABASE_DSN` (a reachable MySQL DSN — e.g. the shared instance via the Cloud SQL
+proxy) and `K_REVISION` set — see `README.md` for the full env-var list.
 
 Style tooling comes from the `christianjbrown/php-code-quality-scripts` dev dependency (`check-style`
 runs **PHP_CodeSniffer 4** with the `ChristianBrown` standard — slevomat sniffs plus PSR/PEAR/Squiz/Generic
@@ -88,17 +98,21 @@ top-level `index.php` holds the framework entry point and is intentionally outsi
 - **`Config`** / **`ConfigInterface`** — a small holder for the API key, latitude, longitude, plus the
   `FunctionConfigInterface` (from `php-gcp-function-lib`) that drives gating/caching.
 - **`ConfigTransformer`** / **`ConfigTransformerInterface`** — builds a `Config` from the environment
-  array. It guards `MET_OFFICE_WEATHER_API_KEY` (`ENV_API_KEY`, presence + `is_string`) and
+  array. It guards `MET_OFFICE_WEATHER_API_KEY` (`ENV_API_KEY`, presence + `is_string`),
   `MET_OFFICE_WEATHER_LATITUDE` / `MET_OFFICE_WEATHER_LONGITUDE` (`ENV_LATITUDE` / `ENV_LONGITUDE`,
-  `isset` + `is_numeric`, then `(float)` cast — `isset` not `empty` so a legitimate `0` survives) with
-  sequential checks, and delegates the rest of the env to the injected `FunctionConfigTransformer`.
+  `isset` + `is_numeric`, then `(float)` cast — `isset` not `empty` so a legitimate `0` survives) and
+  `CHRISTIANBROWN_DATABASE_DSN` (`ENV_DATABASE_DSN`, presence + `is_string`) with sequential checks, and
+  delegates the rest of the env to the injected `FunctionConfigTransformer`.
 - **`DataProvider`** — implements the lib's `DataProviderInterface`. `getData()` fetches the hourly
   forecast for the configured lat/lon, then selects the **current step**: the step with the greatest
   `getTime()` that is at or before `time()` (captured once in the constructor as `$this->now`),
   falling back to the earliest step when every step is in the future. It throws a
   `UserFriendlyException` (`ERROR_NO_FORECAST`) when there are no steps, or when the selected step is
   not a `HourlyForecastTimeStepInterface`. Selection is done with `usort` + `array_filter` +
-  `array_key_last` (no `foreach` with an inner `if`) so each branch is an independent path.
+  `array_key_last` (no `foreach` with an inner `if`) so each branch is an independent path. Once a step
+  is selected it records that step's `getScreenTemperature()` / `getScreenRelativeHumidity()` to the
+  `met_office_weather` table (best-effort, isolated by `try/catch`) before handing the step to the
+  `OutputTransformer`.
 - **`OutputTransformer`** / **`OutputTransformerInterface`** — shapes one `HourlyForecastTimeStep`
   into the response array. The `valid_from` / `valid_from_iso8601` / `valid_to` / `valid_to_iso8601`
   window fields are always emitted; every other field (temp, feels-like, humidity, precipitation,
