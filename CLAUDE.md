@@ -114,7 +114,8 @@ top-level `index.php` holds the framework entry point and is intentionally outsi
 
 The JSON keys are `KEY_*` constants on `OutputTransformerInterface`. `valid_from`,
 `valid_from_iso8601`, `valid_to`, `valid_to_iso8601` are always present. `temp`, `temp_feels_like`,
-`humidity`, `precipitation`, `uv_index`, `visibility`, `wind_speed`, `wind_gust`, `wind_direction`,
+`humidity`, `precipitation`, `uv_index`, `visibility`, `pressure` (hPa, from pascals ÷ 100),
+`dew_point`, `wind_speed`, `wind_gust`, `wind_direction`,
 `type`, and `type_name` appear only when their source value is non-null. `type` is the raw Met Office
 code (int) and `type_name` is the `WeatherType` enum-name token (e.g. `"HEAVY_RAIN"`); the website
 maps `type_name` to a display name + emoji. This

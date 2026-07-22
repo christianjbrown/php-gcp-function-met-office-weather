@@ -70,7 +70,7 @@ final class ContractTest extends TestCase
      */
     public function testSuccessFullPayloadMatchesContract(): void
     {
-        $step = $this->createStep(18.7, 17.2, 65.5, 20, 3, 30000, 10.0, 12.0, 90, WeatherType::SUNNY_DAY);
+        $step = $this->createStep(18.7, 17.2, 65.5, 20, 3, 30000, 10.0, 12.0, 90, WeatherType::SUNNY_DAY, 101320, 12.3);
         $data = (new OutputTransformer())->transform($step);
 
         $dataProvider = self::createStub(BaseDataProviderInterface::class);
@@ -138,11 +138,15 @@ final class ContractTest extends TestCase
     /**
      * @throws Exception
      */
-    private function createStep(?float $temperature, ?float $feelsLike, ?float $humidity, ?int $precipitation, ?int $uvIndex, ?int $visibility, ?float $windSpeed, ?float $windGust, ?int $windDirection, ?WeatherType $weatherCode): HourlyForecastTimeStepInterface
+    private function createStep(?float $temperature, ?float $feelsLike, ?float $humidity, ?int $precipitation, ?int $uvIndex, ?int $visibility, ?float $windSpeed, ?float $windGust, ?int $windDirection, ?WeatherType $weatherCode, ?int $pressure = null, ?float $dewPoint = null): HourlyForecastTimeStepInterface
     {
         $step = self::createStub(HourlyForecastTimeStepInterface::class);
         $step->method('getTime')
             ->willReturn(self::TIME);
+        $step->method('getMslp')
+            ->willReturn($pressure);
+        $step->method('getScreenDewPointTemperature')
+            ->willReturn($dewPoint);
         $step->method('getScreenTemperature')
             ->willReturn($temperature);
         $step->method('getFeelsLikeTemperature')

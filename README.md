@@ -4,7 +4,7 @@
 
 A small [Google Cloud Run function](https://cloud.google.com/run) (PHP) that reads the current outdoor weather for a fixed latitude/longitude from the [Met Office Weather DataHub](https://datahub.metoffice.gov.uk/) Site-Specific **hourly** forecast API and returns it as a single JSON payload.
 
-It fetches the hourly forecast for the configured location, selects the step for the *current* hour (the latest step whose time is at or before now, falling back to the earliest step when the whole series is in the future), and returns that step's temperature, feels-like temperature, humidity, precipitation probability, UV index, visibility, wind speed/gust/direction and weather type — plus the validity window of the reading.
+It fetches the hourly forecast for the configured location, selects the step for the *current* hour (the latest step whose time is at or before now, falling back to the earliest step when the whole series is in the future), and returns that step's temperature, feels-like temperature, humidity, precipitation probability, UV index, visibility, pressure, dew point, wind speed/gust/direction and weather type — plus the validity window of the reading.
 
 
 
@@ -87,6 +87,8 @@ curl http://localhost:8080
     "precipitation": 20,
     "uv_index": 3,
     "visibility": 30000,
+    "pressure": 1013.2,
+    "dew_point": 12.3,
     "wind_speed": 22.369362920544,
     "wind_gust": 26.8432355046528,
     "wind_direction": "E",
@@ -104,6 +106,8 @@ curl http://localhost:8080
 - `precipitation` — probability of precipitation as a percentage. Present only when reported.
 - `uv_index` — UV index. Present only when reported.
 - `visibility` — visibility in metres. Present only when reported.
+- `pressure` — mean sea level pressure in **hectopascals (hPa)** (converted from the API's pascals at full precision — round for display). Present only when reported.
+- `dew_point` — dew point temperature in °C. Present only when reported.
 - `wind_speed` — 10 m wind speed in **mph** (converted from the API's m/s at full precision — round for display). Present only when reported.
 - `wind_gust` — maximum 10 m wind gust in **mph** (converted from m/s at full precision). Present only when reported.
 - `wind_direction` — the 10 m wind direction as a 16-point compass code (e.g. `ENE`). Present only when reported.
