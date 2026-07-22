@@ -25,15 +25,10 @@ final class ConfigTransformer implements ConfigTransformerInterface
      */
     public function transform(array $env): ConfigInterface
     {
-        // Split into sequential guards (rather than a single `||`) so each
-        // failure path is independently reachable for path coverage.
-        if (empty($env[self::ENV_API_KEY])) {
-            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_API_KEY));
-        }
-        if (!is_string($env[self::ENV_API_KEY])) {
-            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_API_KEY));
-        }
-        $apiKey = $env[self::ENV_API_KEY];
+        // The string env vars are guarded by a shared helper (keeping this
+        // method's cyclomatic complexity within the ChristianBrown standard's
+        // limit); latitude/longitude are numeric so are checked inline.
+        $apiKey = $this->extractRequiredString($env, self::ENV_API_KEY);
 
         // isset (not empty) so a legitimate 0 (e.g. longitude at Greenwich) survives.
         if (!isset($env[self::ENV_LATITUDE])) {
@@ -52,16 +47,27 @@ final class ConfigTransformer implements ConfigTransformerInterface
         }
         $longitude = (float) $env[self::ENV_LONGITUDE];
 
-        if (empty($env[self::ENV_DATABASE_DSN])) {
-            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_DATABASE_DSN));
-        }
-        if (!is_string($env[self::ENV_DATABASE_DSN])) {
-            throw new RuntimeException(sprintf('%s not set or not a string', self::ENV_DATABASE_DSN));
-        }
-        $databaseDsn = $env[self::ENV_DATABASE_DSN];
+        $databaseDsn = $this->extractRequiredString($env, self::ENV_DATABASE_DSN);
 
         $requestConfig = $this->functionConfigTransformer->transform($env);
 
         return new Config($requestConfig, $apiKey, $latitude, $longitude, $databaseDsn);
+    }
+
+    /**
+     * @param mixed[] $env
+     */
+    private function extractRequiredString(array $env, string $key): string
+    {
+        // Split into sequential guards (rather than a single `||`) so each
+        // failure path is independently reachable for path coverage.
+        if (empty($env[$key])) {
+            throw new RuntimeException(sprintf('%s not set or not a string', $key));
+        }
+        if (!is_string($env[$key])) {
+            throw new RuntimeException(sprintf('%s not set or not a string', $key));
+        }
+
+        return $env[$key];
     }
 }
