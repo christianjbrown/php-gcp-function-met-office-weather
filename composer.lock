@@ -231,12 +231,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/christianjbrown/php-gcp-function-lib.git",
-                "reference": "58504199bc7d385eb5ec8fae6ff1613c4761abae"
+                "reference": "0da74065ca5f99d942cb162fc07297bf505d08b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/christianjbrown/php-gcp-function-lib/zipball/58504199bc7d385eb5ec8fae6ff1613c4761abae",
-                "reference": "58504199bc7d385eb5ec8fae6ff1613c4761abae",
+                "url": "https://api.github.com/repos/christianjbrown/php-gcp-function-lib/zipball/0da74065ca5f99d942cb162fc07297bf505d08b7",
+                "reference": "0da74065ca5f99d942cb162fc07297bf505d08b7",
                 "shasum": ""
             },
             "require": {
@@ -303,7 +303,7 @@
             "support": {
                 "source": "https://github.com/christianjbrown/php-gcp-function-lib/tree/main"
             },
-            "time": "2026-07-20T20:41:24+00:00"
+            "time": "2026-07-23T02:48:00+00:00"
         },
         {
             "name": "christianjbrown/php-key-value-store-lib",
