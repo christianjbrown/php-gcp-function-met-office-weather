@@ -28,7 +28,7 @@ final class ConfigTransformer implements ConfigTransformerInterface
         // The string env vars are guarded by a shared helper (keeping this
         // method's cyclomatic complexity within the ChristianBrown standard's
         // limit); latitude/longitude are numeric so are checked inline.
-        $apiKey = $this->extractRequiredString($env, self::ENV_API_KEY);
+        $apiKey = self::extractRequiredString($env, self::ENV_API_KEY);
 
         // isset (not empty) so a legitimate 0 (e.g. longitude at Greenwich) survives.
         if (!isset($env[self::ENV_LATITUDE])) {
@@ -47,7 +47,7 @@ final class ConfigTransformer implements ConfigTransformerInterface
         }
         $longitude = (float) $env[self::ENV_LONGITUDE];
 
-        $databaseDsn = $this->extractRequiredString($env, self::ENV_DATABASE_DSN);
+        $databaseDsn = self::extractRequiredString($env, self::ENV_DATABASE_DSN);
 
         $requestConfig = $this->functionConfigTransformer->transform($env);
 
@@ -57,7 +57,7 @@ final class ConfigTransformer implements ConfigTransformerInterface
     /**
      * @param mixed[] $env
      */
-    private function extractRequiredString(array $env, string $key): string
+    private static function extractRequiredString(array $env, string $key): string
     {
         // Split into sequential guards (rather than a single `||`) so each
         // failure path is independently reachable for path coverage.
