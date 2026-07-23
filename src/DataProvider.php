@@ -100,7 +100,7 @@ final class DataProvider implements DataProviderInterface
      */
     private function selectCurrentStep(array $timeSteps): ForecastTimeStepInterface
     {
-        $sorted = $this->sortByTime($timeSteps);
+        $sorted = self::sortByTime($timeSteps);
 
         $past = array_values(
             array_filter(
@@ -121,7 +121,7 @@ final class DataProvider implements DataProviderInterface
      *
      * @return non-empty-list<ForecastTimeStepInterface>
      */
-    private function sortByTime(array $timeSteps): array
+    private static function sortByTime(array $timeSteps): array
     {
         $sorted = array_values($timeSteps);
         usort(

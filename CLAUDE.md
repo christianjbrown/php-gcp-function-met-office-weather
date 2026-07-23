@@ -153,6 +153,9 @@ numeric values.
 - **Transformers**: one `transform(...)` method returning the shaped result. Arrays crossing a public
   boundary carry a `@param mixed[]` / `@return mixed[]` docblock so PHPStan `level: max` is satisfied
   (the payload can be a list or a map, so `mixed[]`, not `array<string, mixed>`).
+- **A method that does not use `$this` must be `static`** (called via `self::`) — a stateless helper
+  is static. Enforced for private methods by the shared `RequireStaticPrivateMethodRule` PHPStan rule
+  (via `php-code-quality-scripts`' `config/phpstan.neon`); interface/override methods stay instance.
 - **Coverage-driven control flow**: guards are deliberately split into sequential `if`s (rather than a
   single `||`) and optional blocks are unioned as self-contained helpers so each branch is an
   independently reachable path — keep this pattern, it exists to hit 100% path coverage. Avoid

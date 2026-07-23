@@ -30,19 +30,19 @@ final class OutputTransformer implements OutputTransformerInterface
             self::KEY_VALID_TO => $validTo,
             self::KEY_VALID_TO_ISO8601 => gmdate(DATE_ATOM, $validTo),
         ];
-        $data += $this->temperature($step);
-        $data += $this->feelsLike($step);
-        $data += $this->humidity($step);
-        $data += $this->precipitation($step);
-        $data += $this->uvIndex($step);
-        $data += $this->visibility($step);
-        $data += $this->pressure($step);
-        $data += $this->dewPoint($step);
-        $data += $this->windSpeed($step);
-        $data += $this->windGust($step);
-        $data += $this->windDirection($step);
-        $data += $this->type($step);
-        $data += $this->typeName($step);
+        $data += self::temperature($step);
+        $data += self::feelsLike($step);
+        $data += self::humidity($step);
+        $data += self::precipitation($step);
+        $data += self::uvIndex($step);
+        $data += self::visibility($step);
+        $data += self::pressure($step);
+        $data += self::dewPoint($step);
+        $data += self::windSpeed($step);
+        $data += self::windGust($step);
+        $data += self::windDirection($step);
+        $data += self::type($step);
+        $data += self::typeName($step);
 
         return $data;
     }
@@ -50,7 +50,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function dewPoint(HourlyForecastTimeStepInterface $step): array
+    private static function dewPoint(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getScreenDewPointTemperature();
         if (null === $value) {
@@ -63,7 +63,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function feelsLike(HourlyForecastTimeStepInterface $step): array
+    private static function feelsLike(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getFeelsLikeTemperature();
         if (null === $value) {
@@ -76,7 +76,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function humidity(HourlyForecastTimeStepInterface $step): array
+    private static function humidity(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getScreenRelativeHumidity();
         if (null === $value) {
@@ -89,7 +89,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function precipitation(HourlyForecastTimeStepInterface $step): array
+    private static function precipitation(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getProbOfPrecipitation();
         if (null === $value) {
@@ -102,7 +102,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function pressure(HourlyForecastTimeStepInterface $step): array
+    private static function pressure(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getMslp();
         if (null === $value) {
@@ -115,7 +115,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function temperature(HourlyForecastTimeStepInterface $step): array
+    private static function temperature(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getScreenTemperature();
         if (null === $value) {
@@ -128,7 +128,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function type(HourlyForecastTimeStepInterface $step): array
+    private static function type(HourlyForecastTimeStepInterface $step): array
     {
         $code = $step->getSignificantWeatherCode();
         if (null === $code) {
@@ -141,7 +141,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function typeName(HourlyForecastTimeStepInterface $step): array
+    private static function typeName(HourlyForecastTimeStepInterface $step): array
     {
         $code = $step->getSignificantWeatherCode();
         if (null === $code) {
@@ -154,7 +154,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function uvIndex(HourlyForecastTimeStepInterface $step): array
+    private static function uvIndex(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getUvIndex();
         if (null === $value) {
@@ -167,7 +167,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function visibility(HourlyForecastTimeStepInterface $step): array
+    private static function visibility(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getVisibility();
         if (null === $value) {
@@ -180,7 +180,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function windDirection(HourlyForecastTimeStepInterface $step): array
+    private static function windDirection(HourlyForecastTimeStepInterface $step): array
     {
         $degrees = $step->getWindDirectionFrom10m();
         if (null === $degrees) {
@@ -196,7 +196,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function windGust(HourlyForecastTimeStepInterface $step): array
+    private static function windGust(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getMax10mWindGust();
         if (null === $value) {
@@ -209,7 +209,7 @@ final class OutputTransformer implements OutputTransformerInterface
     /**
      * @return mixed[]
      */
-    private function windSpeed(HourlyForecastTimeStepInterface $step): array
+    private static function windSpeed(HourlyForecastTimeStepInterface $step): array
     {
         $value = $step->getWindSpeed10m();
         if (null === $value) {
