@@ -255,13 +255,12 @@ components:
       type: object
       additionalProperties: false
     SuccessEnvelope:
-      description: 'The shared base of the JSON success envelope returned by every consuming function. The `data` property is a generic object placeholder; each function tightens it to its own data schema by composing this base with `allOf`, e.g. `allOf: [{$ref: "#/components/schemas/SuccessEnvelope"}, {properties: {data: {$ref: "#/components/schemas/YourData"}}}]`.'
+      description: 'The shared base of the JSON success envelope returned by every consuming function. The `data` property is a generic, untyped payload placeholder — a function tightens it to its own object or array schema by composing this base with `allOf`, e.g. `allOf: [{$ref: "#/components/schemas/SuccessEnvelope"}, {properties: {data: {$ref: "#/components/schemas/YourData"}}}]`. It is omitted from `required` because a function with an empty payload emits no `data` key at all.'
       required:
         - success
         - timestamp_unix
         - timestamp_iso8601
         - version
-        - data
       properties:
         success:
           description: 'Always true for a success response.'
@@ -279,7 +278,6 @@ components:
           description: 'The Cloud Run revision that produced the response.'
           type: string
         data:
-          description: 'The function-specific payload. Each function overrides this via `allOf` with its own data schema.'
-          type: object
+          description: 'The function-specific payload (object or array). Each function overrides this via `allOf` with its own data schema.'
       type: object
       additionalProperties: false
